@@ -1,0 +1,262 @@
+<!--
+  about.html
+  About page partial (default landing view).
+  Injected into <main id="app"> as <div data-page="about">
+  Depends on: main.js, router.js
+-->
+        <!-- HERO SECTION                                                              -->
+        <!-- ========================================================================= -->
+        <section
+          class="relative w-full px-margin-mobile lg:px-margin pt-12 pb-24 overflow-hidden border-b border-border-hairline bg-surface-pitch">
+          <!-- Top Metadata Bar -->
+          <div
+            class="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-border-hairline reveal-item">
+            <div class="flex items-center gap-3">
+              <span
+                class="inline-flex items-center gap-2 px-2.5 py-1 bg-surface-container border border-border-hairline font-label-mono-sm text-label-mono-sm uppercase text-text-muted">
+                <span class="w-2 h-2 rounded-full bg-primary-container rec-dot"></span>
+                REC [<span class="font-mono text-on-surface" id="hero-timecode">00:24:30:05</span>]
+              </span>
+            </div>
+            <div
+              class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest flex items-center gap-2">
+              <span class="text-primary-container font-semibold">NIST</span>
+              <span class="text-primary-container font-semibold">UNIVERSITY • INSTITUTE PARK • BERHAMPUR</span>
+            </div>
+          </div>
+          <!-- Editorial Monumental Typography -->
+          <div class="py-16 lg:py-24">
+            <h1
+              class="font-display-hero text-headline-xl-mobile sm:text-headline-xl lg:text-display-hero uppercase tracking-tighter text-on-surface leading-none m-0 reveal-item transition-transform duration-700">
+              THE MEDIAMOVERS
+            </h1>
+            <div class="mt-4 flex flex-col md:flex-row md:items-baseline justify-between gap-6 reveal-item">
+              <p
+                class="font-headline-lg text-headline-lg-mobile lg:text-headline-lg uppercase text-text-muted tracking-tight">
+                CONNECT. CREATE. <span class="text-primary-container font-headline-lg">COLLABORATE.</span></p>
+              <p class="max-w-md font-body-md text-body-md text-text-muted">
+                The official student creative society of NIST PR Cell since 2023<br />
+                -- A Cinematic Hub for NISTians.
+              </p>
+            </div>
+            <!-- Action Cluster -->
+            <div class="mt-10 flex flex-wrap items-center gap-4 reveal-item">
+              <a class="group inline-flex items-center gap-3 px-8 py-3.5 bg-on-surface text-surface-pitch font-label-mono-lg text-label-mono-lg uppercase font-medium tracking-wider hover:bg-primary-container hover:text-on-surface hover:shadow-[0_0_24px_rgba(255,94,30,0.35)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                href="#/our-work">
+                <span class="">EXPLORE MEDIAMOVERS</span>
+                <span
+                  class="material-symbols-outlined text-[16px] transform group-hover:translate-y-1 transition-transform">arrow_downward</span>
+              </a>
+              <button
+                class="group inline-flex items-center gap-3 px-7 py-3.5 bg-surface-pitch border border-border-subtle text-on-surface font-label-mono-lg text-label-mono-lg uppercase tracking-wider hover:border-primary-container hover:text-primary hover:shadow-[0_0_20px_rgba(255,94,30,0.15)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                onclick="document.getElementById('reel-modal').classList.remove('hidden')">
+                <span
+                  class="material-symbols-outlined text-primary-container text-[18px] group-hover:scale-125 transition-transform">play_arrow</span>
+                <span class="">THE TEAM</span>
+              </button>
+            </div>
+          </div>
+          <!-- Full-bleed Cinematography Rig Frame -->
+          <div
+            class="relative w-full border border-border-hairline overflow-hidden group reveal-item transition-all duration-500 hover:border-border-subtle">
+            <!-- Camera Slate Overlays -->
+            <div class="absolute top-4 left-4 z-20 flex items-center gap-2 pointer-events-none">
+              <span
+                class="px-2 py-0.5 bg-surface-pitch/90 font-label-mono-sm text-label-mono-sm uppercase text-primary border border-border-hairline backdrop-blur-sm">CAM
+                A // MAIN RIG</span>
+              <span
+                class="px-2 py-0.5 bg-surface-pitch/90 font-label-mono-sm text-label-mono-sm uppercase text-text-muted border border-border-hairline backdrop-blur-sm">ANAMORPHIC
+                35MM T1.5</span>
+            </div>
+            <div class="absolute top-4 right-4 z-20 hidden md:flex items-center gap-3 pointer-events-none">
+              <span
+                class="px-2 py-0.5 bg-surface-pitch/90 font-label-mono-sm text-label-mono-sm uppercase text-text-muted border border-border-hairline backdrop-blur-sm">ISO
+                800</span>
+              <span
+                class="px-2 py-0.5 bg-surface-pitch/90 font-label-mono-sm text-label-mono-sm uppercase text-text-muted border border-border-hairline backdrop-blur-sm">SHUTTER
+                180</span>
+              <span
+                class="px-2 py-0.5 bg-surface-pitch/90 font-label-mono-sm text-label-mono-sm uppercase text-primary-container border border-border-hairline backdrop-blur-sm">SYNC
+                OK</span>
+            </div>
+            <!-- Hero Image with smooth ambient scale -->
+            <div class="w-full h-[420px] lg:h-[620px] relative overflow-hidden bg-surface-container">
+              <img alt="The MediaMovers Team & Crew"
+                class="w-full h-full object-cover object-[center_25%] grayscale contrast-125 brightness-90 group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700 ease-out"
+                data-alt="NIST campus student documentary film crew on location at dusk under cobblestone plaza lighting with gimbal cinema rig and focus monitors"
+                src="team/team.jpg">
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-surface-pitch via-transparent to-surface-pitch/40 pointer-events-none group-hover:opacity-80 transition-opacity duration-500">
+              </div>
+            </div>
+            <!-- Viewfinder Grid Lines Overlay with subtle pulse/brighten on hover -->
+            <div class="absolute inset-0 pointer-events-none border border-border-hairline">
+              <div class="border-r border-b border-border-hairline"></div>
+              <div class="border-r border-b border-border-hairline"></div>
+              <div class="border-b border-border-hairline"></div>
+              <div class="border-r border-b border-border-hairline"></div>
+              <div class="border-r border-b border-border-hairline flex items-center justify-center">
+                <!-- Viewfinder Crosshair -->
+                <div class="w-4 h-4 border border-primary-container/40 rounded-full opacity-60"></div>
+              </div>
+              <div class="border-b border-border-hairline"></div>
+              <div class="border-r border-b border-border-hairline"></div>
+              <div class="border-r border-b border-border-hairline"></div>
+              <div></div>
+            </div>
+            <!-- Bottom Metadata Bar inside Camera Frame -->
+            <div class="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+              <span
+                class="font-label-mono-sm text-label-mono-sm text-on-surface bg-surface-pitch/80 px-2 py-1 uppercase tracking-widest border border-border-hairline backdrop-blur-sm">
+                [ SCENE 08 // TAKE 03 // LOCATION: FOUNTAIN QUAD ]
+              </span>
+              <span
+                class="hidden sm:inline-block font-label-mono-sm text-label-mono-sm text-primary-container bg-surface-pitch/80 px-2 py-1 uppercase tracking-widest border border-border-hairline backdrop-blur-sm">
+                AUDIO CH1 -18dB PEAK
+              </span>
+            </div>
+          </div>
+          <!-- Scroll Prompter -->
+          <div
+            class="pt-8 flex items-center justify-between text-text-muted font-label-mono-sm text-label-mono-sm uppercase reveal-item">
+            <span class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-primary-container rounded-full rec-dot"></span>
+              SCROLL TO EXPLORE ARCHIVE
+            </span>
+            <span class="material-symbols-outlined text-[18px] animate-bounce text-primary">arrow_downward</span>
+            <span class="">NIST University-BERHAMPUR // EST. 2023</span>
+          </div>
+        </section>
+        <!-- ========================================================================= -->
+        <!-- MARQUEE TICKER 01 (Continuous 60FPS CSS animation)                       -->
+        <!-- ========================================================================= -->
+        <div class="w-full bg-surface-slate border-b border-border-hairline overflow-hidden py-3 select-none">
+          <div class="animate-marquee-continuous">
+            <div
+              class="flex items-center gap-8 font-label-mono-lg text-label-mono-lg tracking-widest text-on-surface uppercase pr-8">
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+              <span class="">CREATE</span><span class="text-primary-container">//////</span>
+              <span class="">COLLABORATE</span><span class="text-primary-container">//////</span>
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+              <span class="">CREATE</span><span class="text-primary-container">//////</span>
+              <span class="">COLLABORATE</span><span class="text-primary-container">//////</span>
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+            </div>
+            <div aria-hidden="true"
+              class="flex items-center gap-8 font-label-mono-lg text-label-mono-lg tracking-widest text-on-surface uppercase pr-8">
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+              <span class="">CREATE</span><span class="text-primary-container">//////</span>
+              <span class="">COLLABORATE</span><span class="text-primary-container">//////</span>
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+              <span class="">CREATE</span><span class="text-primary-container">//////</span>
+              <span class="">COLLABORATE</span><span class="text-primary-container">//////</span>
+              <span class="">CONNECT</span><span class="text-primary-container">//////</span>
+            </div>
+          </div>
+        </div>
+        <!-- ========================================================================= -->
+        <!-- 01 // ABOUT & MANIFESTO                                                   -->
+        <!-- ========================================================================= -->
+        <section class="w-full px-margin-mobile lg:px-margin py-24 border-b border-border-hairline bg-surface-pitch"
+          id="about">
+          <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <!-- Left Anchor & Numbering -->
+            <div class="lg:col-span-4 flex flex-col justify-between h-full space-y-8 reveal-item">
+              <div>
+                <h2
+                  class="font-headline-lg text-headline-lg-mobile lg:text-headline-lg uppercase tracking-tight text-on-surface leading-none">
+                  WE DON'T JUST COVER THE CAMPUS. <span class="text-primary">WE DIRECT ITS NARRATIVE.</span>
+                </h2>
+              </div>
+              <div class="space-y-4 font-body-md text-body-md text-text-muted border-l-2 border-primary-container pl-5">
+                <p class="">
+                  Born inside the labs and courtyards of NIST University, The MediaMovers is a high-octane collective of
+                  directors, cinematographers, investigative writers, and colorists who refuse to treat campus life like
+                  an afterthought.
+                </p>
+                <p class="">
+                  We deploy production cinema cameras, high-velocity audio capture, and ruthless post-production
+                  discipline to convert fleeting collegiate memories into permanent archival folklore.
+                </p>
+              </div>
+              <div class="pt-4">
+                <a class="group inline-flex items-center gap-2 font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-primary hover:text-on-surface transition-colors"
+                  href="#">
+                  <span class="">[ READ OUR COMPLETE FOUNDING CHARTER ]</span>
+                  <span
+                    class="material-symbols-outlined text-[16px] transform group-hover:translate-x-1.5 transition-transform duration-200">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+            <!-- Right Side Visual & Technical Specs -->
+            <div class="lg:col-span-8 flex flex-col space-y-8">
+              <div
+                class="relative border border-border-hairline overflow-hidden bg-surface-container group reveal-item hover:border-border-subtle transition-colors duration-300">
+                <div class="w-full h-80 sm:h-96 relative overflow-hidden">
+                  <img alt="NIST Broadcast team recording on campus ground"
+                    class="w-full h-full object-cover contrast-110 grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 ease-out"
+                    data-alt="NIST campus student broadcast reporter conducting an outdoor interview in courtyard with directional microphone and lanyard pass"
+                    src="team/Screenshot 2026-09-20 200951.png">
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-surface-pitch via-surface-pitch/20 to-transparent group-hover:opacity-80 transition-opacity">
+                  </div>
+                </div>
+                <div
+                  class="p-6 bg-surface-slate flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-border-hairline">
+                  <div>
+                    <div class="font-label-mono-sm text-label-mono-sm text-primary-container uppercase tracking-wider">
+                      INTERVIEW SERIES</div>
+                    <div class="font-headline-md text-headline-md text-on-surface">DRDO SCIENTISTS ON STEALTH TECHNOLOGY
+                      & ACADEMIA'S ROLE
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Metric Stat Tiles (Staggered hover effects) -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div
+                  class="p-5 bg-surface-slate border border-border-hairline flex flex-col justify-between group hover:border-primary-container hover:-translate-y-1 transition-all duration-300 reveal-item">
+                  <div class="mt-4">
+                    <span
+                      class="font-headline-lg text-headline-lg uppercase text-on-surface font-normal group-hover:text-primary transition-colors">20+</span>
+                    <p class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase mt-1">ACTIVE SPECIALISTS
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="p-5 bg-surface-slate border border-border-hairline flex flex-col justify-between group hover:border-primary-container hover:-translate-y-1 transition-all duration-300 reveal-item"
+                  style="transition-delay: 80ms;">
+
+                  <div class="mt-4">
+                    <span
+                      class="font-headline-lg text-headline-lg uppercase text-on-surface font-normal group-hover:text-primary transition-colors">5</span>
+                    <p class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase mt-1">BEYOND CAMPUS SERIES
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="p-5 bg-surface-slate border border-border-hairline flex flex-col justify-between group hover:border-primary-container hover:-translate-y-1 transition-all duration-300 reveal-item"
+                  style="transition-delay: 160ms;">
+
+                  <div class="mt-4">
+                    <span
+                      class="font-headline-lg text-headline-lg uppercase text-primary-container font-normal group-hover:scale-105 inline-block transition-transform origin-left">1.5M</span>
+                    <p class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase mt-1">CROSS-PLATFORM VIEWS
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="p-5 bg-surface-slate border border-border-hairline flex flex-col justify-between group hover:border-primary-container hover:-translate-y-1 transition-all duration-300 reveal-item"
+                  style="transition-delay: 240ms;">
+
+                  <div class="mt-4">
+                    <span
+                      class="font-headline-lg text-headline-lg uppercase text-on-surface font-normal group-hover:text-primary transition-colors">100%</span>
+                    <p class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase mt-1">STUDENT-DIRECTED</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ========================================================================= -->

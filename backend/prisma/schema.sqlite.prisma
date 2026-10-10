@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id              Int      @id @default(autoincrement())
+  name            String
+  role            String
+  department      String
+  quote           String?
+  bio             String?
+  photoUrl        String
+  instagramHandle String?
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("members")
+}
+
+model WorkItem {
+  id           Int      @id @default(autoincrement())
+  title        String
+  thumbnailUrl String
+  category     String
+  videoUrl     String?
+  description  String?
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("work_items")
+}
+
+model WirePhoto {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  title       String
+  description String?
+  reelTag     String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("wire_photos")
+}
+
+model Application {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String
+  department    String
+  portfolioLink String?
+  message       String?
+  status        String   @default("new")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("applications")
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admin_users")
+}

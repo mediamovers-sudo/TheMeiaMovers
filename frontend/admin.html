@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediaMovers — Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_outward,close,delete,edit,image,logout,photo_camera,refresh,save,visibility&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            "brand-blue": "#3B499B",
+            "brand-orange": "#FF5E1E",
+            "surface-pitch": "#0B1220",
+            "surface": "#101828",
+            "surface-slate": "#151D2E",
+            "surface-container": "#1A2236",
+            "on-surface": "#F0F0F5",
+            "text-muted": "#7A7A85",
+            "border-hairline": "#232B3E",
+            "border-subtle": "#2A3350",
+            "primary-container": "#FF5E1E",
+            "accent-hover": "#FF7A42"
+          },
+          fontFamily: {
+            "body-md": ["Outfit"],
+            "body-sm": ["Outfit"],
+            "body-lg": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "headline-lg": ["Anton"],
+            "label-mono-sm": ["JetBrains Mono"],
+            "label-mono-lg": ["JetBrains Mono"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .tab-btn.active { color: #FF5E1E; border-bottom: 2px solid #FF5E1E; }
+    .modal-backdrop { background: rgba(11,18,32,0.92); backdrop-filter: blur(8px); }
+    table th { text-transform: uppercase; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0B1220; }
+    ::-webkit-scrollbar-thumb { background: #2A3350; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-surface-pitch text-on-surface font-body-md antialiased min-h-screen">
+
+  <!-- ======================== LOGIN VIEW ======================== -->
+  <div id="login-view" class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface-slate border border-border-hairline p-8">
+      <div class="text-center mb-8">
+        <div class="font-label-mono-sm text-[11px] tracking-[0.1em] text-primary-container uppercase mb-2">// RESTRICTED CALLBOARD ACCESS</div>
+        <h1 class="font-headline-lg text-4xl uppercase tracking-tight">ADMIN PANEL</h1>
+        <p class="text-text-muted text-sm mt-2">The MediaMovers — NIST PR Cell</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">EMAIL</label>
+          <input id="login-email" type="email" required
+            class="w-full bg-surface-pitch border border-border-subtle p-3 text-on-surface text-sm focus:outline-none focus:border-primary-container transition-colors"
+            placeholder="admin@mediamovers.nist.edu">
+        </div>
+        <div>
+          <label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">PASSWORD</label>
+          <input id="login-password" type="password" required
+            class="w-full bg-surface-pitch border border-border-subtle p-3 text-on-surface text-sm focus:outline-none focus:border-primary-container transition-colors"
+            placeholder="••••••••••">
+        </div>
+        <div id="login-error" class="hidden text-xs font-mono text-red-400 py-1"></div>
+        <button id="login-btn" type="submit"
+          class="w-full py-3 bg-primary-container text-white font-label-mono-lg text-[13px] tracking-[0.08em] uppercase font-medium hover:bg-accent-hover transition-all">
+          AUTHENTICATE
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================== DASHBOARD VIEW ======================== -->
+  <div id="dashboard-view" class="hidden min-h-screen flex flex-col">
+
+    <!-- Top Bar -->
+    <header class="h-16 bg-surface border-b border-border-hairline flex items-center justify-between px-6 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+        <span class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase">// ADMIN DASHBOARD</span>
+        <span class="font-label-mono-sm text-[11px] tracking-[0.1em] text-on-surface uppercase font-semibold">THE MEDIAMOVERS</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="admin-email-display" class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted"></span>
+        <button id="logout-btn"
+          class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors font-label-mono-sm text-[11px] tracking-[0.1em] uppercase">
+          <span class="material-symbols-outlined text-[16px]">logout</span> LOGOUT
+        </button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="bg-surface-slate border-b border-border-hairline flex items-center gap-0 px-6 shrink-0 overflow-x-auto">
+      <button class="tab-btn active px-5 py-3.5 font-label-mono-sm text-[11px] tracking-[0.1em] uppercase text-text-muted hover:text-on-surface transition-colors border-b-2 border-transparent whitespace-nowrap"
+        data-tab="members">Members</button>
+      <button class="tab-btn px-5 py-3.5 font-label-mono-sm text-[11px] tracking-[0.1em] uppercase text-text-muted hover:text-on-surface transition-colors border-b-2 border-transparent whitespace-nowrap"
+        data-tab="work-items">Work Items</button>
+      <button class="tab-btn px-5 py-3.5 font-label-mono-sm text-[11px] tracking-[0.1em] uppercase text-text-muted hover:text-on-surface transition-colors border-b-2 border-transparent whitespace-nowrap"
+        data-tab="wire-photos">Wire Photos</button>
+      <button class="tab-btn px-5 py-3.5 font-label-mono-sm text-[11px] tracking-[0.1em] uppercase text-text-muted hover:text-on-surface transition-colors border-b-2 border-transparent whitespace-nowrap"
+        data-tab="applications">Applications</button>
+    </nav>
+
+    <!-- Tab Content Area -->
+    <div class="flex-1 overflow-y-auto p-6">
+
+      <!-- Members Panel -->
+      <div id="panel-members" class="tab-panel">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-headline-md text-2xl font-semibold uppercase">Collective Members</h2>
+          <button onclick="openMemberModal()"
+            class="flex items-center gap-2 px-4 py-2 bg-brand-blue text-black font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-blue-700 transition-colors">
+            <span class="material-symbols-outlined text-[16px]">add</span> ADD MEMBER
+          </button>
+        </div>
+        <div class="overflow-x-auto border border-border-hairline">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container">
+              <tr>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Photo</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Name</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Role</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Department</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Order</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline w-24">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-table-body" class="text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Work Items Panel -->
+      <div id="panel-work-items" class="tab-panel hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-headline-md text-2xl font-semibold uppercase">Featured Archives</h2>
+          <button onclick="openWorkItemModal()"
+            class="flex items-center gap-2 px-4 py-2 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors">
+            <span class="material-symbols-outlined text-[16px]">add</span> ADD WORK ITEM
+          </button>
+        </div>
+        <div class="overflow-x-auto border border-border-hairline">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container">
+              <tr>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Thumb</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Title</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Category</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Order</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline w-24">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="work-items-table-body" class="text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Wire Photos Panel -->
+      <div id="panel-wire-photos" class="tab-panel hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-headline-md text-2xl font-semibold uppercase">Wire Photos</h2>
+          <button onclick="openWirePhotoModal()"
+            class="flex items-center gap-2 px-4 py-2 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors">
+            <span class="material-symbols-outlined text-[16px]">add</span> ADD WIRE PHOTO
+          </button>
+        </div>
+        <div class="overflow-x-auto border border-border-hairline">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container">
+              <tr>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Image</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Title</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Reel Tag</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Order</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline w-24">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="wire-photos-table-body" class="text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Applications Panel -->
+      <div id="panel-applications" class="tab-panel hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-headline-md text-2xl font-semibold uppercase">Crew Applications</h2>
+          <button onclick="loadApplications()"
+            class="flex items-center gap-2 px-4 py-2 border border-border-subtle text-text-muted hover:text-on-surface font-label-mono-sm text-[11px] tracking-[0.1em] uppercase transition-colors">
+            <span class="material-symbols-outlined text-[16px]">refresh</span> REFRESH
+          </button>
+        </div>
+        <div class="overflow-x-auto border border-border-hairline">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container">
+              <tr>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Name</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Email</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Dept</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Portfolio</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Message</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Status</th>
+                <th class="p-3 text-text-muted border-b border-border-hairline">Date</th>
+              </tr>
+            </thead>
+            <tbody id="applications-table-body" class="text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== GENERIC MODAL SHELL ======================== -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg bg-surface-slate border border-border-hairline p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-5">
+        <h3 id="modal-title" class="font-headline-md text-xl font-semibold uppercase">Modal</h3>
+        <button onclick="closeAdminModal()" class="text-text-muted hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+     * GLOBAL STATE
+     * ======================================================== */
+    var currentTab = 'members';
+
+    /* ========================================================
+     * CENTRALIZED FETCH — error categorization
+     * ======================================================== */
+    async function apiFetch(url, opts) {
+      opts = opts || {};
+      opts.credentials = 'include';
+      try {
+        var res = await fetch(url, opts);
+        return res;
+      } catch (e) {
+        // Network-level failure: server unreachable or file:// origin
+        if (location.protocol === 'file:') {
+          console.error('[ADMIN] This page was opened as a file:// URL. It MUST be served through the backend at http://localhost:5000/admin.html');
+        } else {
+          console.error('[ADMIN] Server unreachable at ' + url + ' — is the backend running? (' + e.message + ')');
+        }
+        throw e;
+      }
+    }
+
+    function logApiError(context, res) {
+      if (res.status === 401) {
+        console.warn('[ADMIN] 401 Unauthorized on ' + context + ' — session expired or not logged in.');
+      } else if (res.status >= 500) {
+        console.error('[ADMIN] 500 Server Error on ' + context + ' — check backend logs.');
+      } else if (res.status >= 400) {
+        console.warn('[ADMIN] ' + res.status + ' Client Error on ' + context);
+      }
+    }
+
+    /* ========================================================
+     * AUTH — Session Check, Login, Logout
+     * ======================================================== */
+    async function checkSession() {
+      try {
+        var res = await apiFetch('/api/auth/me');
+        if (res.ok) {
+          var data = await res.json();
+          showDashboard(data.user.email);
+        } else {
+          console.log('[ADMIN] No active session — showing login. (Status: ' + res.status + ')');
+          showLogin();
+        }
+      } catch (e) {
+        console.error('[ADMIN] Cannot reach backend. Make sure you access this page via http://localhost:5000/admin.html');
+        showLogin();
+        // Show a visible warning if opened as file://
+        if (location.protocol === 'file:') {
+          var errEl = document.getElementById('login-error');
+          errEl.textContent = 'ERROR: Open this page via http://localhost:5000/admin.html — not as a local file.';
+          errEl.classList.remove('hidden');
+        }
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('login-view').classList.remove('hidden');
+      document.getElementById('dashboard-view').classList.add('hidden');
+    }
+
+    function showDashboard(email) {
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      document.getElementById('admin-email-display').textContent = email || '';
+      loadMembers();
+      loadWorkItems();
+      loadWirePhotos();
+      loadApplications();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async function(ev) {
+      ev.preventDefault();
+      var errEl = document.getElementById('login-error');
+      errEl.classList.add('hidden');
+      var btn = document.getElementById('login-btn');
+      btn.textContent = 'AUTHENTICATING...';
+      btn.disabled = true;
+
+      try {
+        var res = await apiFetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('login-email').value,
+            password: document.getElementById('login-password').value
+          })
+        });
+        var data = await res.json();
+        if (res.ok) {
+          showDashboard(data.user.email);
+        } else {
+          logApiError('POST /api/auth/login', res);
+          errEl.textContent = data.error || 'Authentication failed.';
+          errEl.classList.remove('hidden');
+        }
+      } catch (e) {
+        if (location.protocol === 'file:') {
+          errEl.textContent = 'ERROR: Open this page via http://localhost:5000/admin.html — not as a local file.';
+        } else {
+          errEl.textContent = 'Server unreachable — start the backend with: cd backend && node server.js';
+        }
+        errEl.classList.remove('hidden');
+      }
+      btn.textContent = 'AUTHENTICATE';
+      btn.disabled = false;
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async function() {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+      showLogin();
+    });
+
+    /* ========================================================
+     * TABS
+     * ======================================================== */
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.add('hidden'); });
+        var tab = btn.dataset.tab;
+        document.getElementById('panel-' + tab).classList.remove('hidden');
+        currentTab = tab;
+      });
+    });
+
+    /* ========================================================
+     * MODAL HELPERS
+     * ======================================================== */
+    function openAdminModal(title, html) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = html;
+      document.getElementById('admin-modal').classList.remove('hidden');
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+    }
+
+    /* ========================================================
+     * IMAGE UPLOAD HELPER
+     * ======================================================== */
+    async function uploadImage(fileInput) {
+      if (!fileInput.files || !fileInput.files[0]) return null;
+      var fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      var res = await apiFetch('/api/upload', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error('Image upload failed');
+      var data = await res.json();
+      return data.url;
+    }
+
+    /* ========================================================
+     * MEMBERS CRUD
+     * ======================================================== */
+    var membersData = [];
+
+    async function loadMembers() {
+      try {
+        var res = await apiFetch('/api/members');
+        membersData = await res.json();
+        renderMembersTable();
+      } catch (e) { console.error('Failed to load members', e); }
+    }
+
+    function renderMembersTable() {
+      var tbody = document.getElementById('members-table-body');
+      if (!membersData.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-text-muted">No members found. Add the first one.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = membersData.map(function(m) {
+        return '<tr class="border-b border-border-hairline hover:bg-surface-container/50 transition-colors">' +
+          '<td class="p-3"><img src="' + m.photoUrl + '" class="w-12 h-12 object-cover border border-border-hairline" alt=""></td>' +
+          '<td class="p-3 font-medium">' + m.name + '</td>' +
+          '<td class="p-3 text-text-muted">' + m.role + '</td>' +
+          '<td class="p-3 text-text-muted">' + m.department + '</td>' +
+          '<td class="p-3 text-text-muted">' + m.sortOrder + '</td>' +
+          '<td class="p-3"><div class="flex gap-2">' +
+            '<button onclick="openMemberModal(' + m.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button onclick="deleteMember(' + m.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+          '</div></td></tr>';
+      }).join('');
+    }
+
+    function openMemberModal(id) {
+      var m = id ? membersData.find(function(x) { return x.id === id; }) : null;
+      var title = m ? 'EDIT MEMBER' : 'ADD MEMBER';
+      var html = '<form id="member-form" class="space-y-4">' +
+        '<input type="hidden" name="id" value="' + (m ? m.id : '') + '">' +
+        field('Name', 'name', m ? m.name : '', 'text', true) +
+        field('Role', 'role', m ? m.role : '', 'text', true) +
+        field('Department', 'department', m ? m.department : '', 'text', true) +
+        field('Quote', 'quote', m ? (m.quote || '') : '') +
+        field('Bio', 'bio', m ? (m.bio || '') : '', 'textarea') +
+        field('Photo URL', 'photoUrl', m ? m.photoUrl : '', 'text', true) +
+        '<div><label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">Or Upload Image</label>' +
+          '<input type="file" id="member-photo-file" accept="image/*" class="w-full text-sm text-text-muted file:mr-3 file:px-3 file:py-1.5 file:border file:border-border-subtle file:bg-surface-container file:text-on-surface file:text-xs file:uppercase file:cursor-pointer"></div>' +
+        field('Instagram Handle', 'instagramHandle', m ? (m.instagramHandle || '') : '') +
+        field('Sort Order', 'sortOrder', m ? m.sortOrder : 0, 'number') +
+        '<div class="pt-3 flex justify-end"><button type="submit" class="px-5 py-2.5 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors"><span class="material-symbols-outlined text-[14px] align-middle mr-1">save</span>SAVE</button></div>' +
+        '</form>';
+      openAdminModal(title, html);
+
+      document.getElementById('member-form').addEventListener('submit', async function(ev) {
+        ev.preventDefault();
+        var form = ev.target;
+        var payload = formToObj(form);
+
+        // Upload image if file chosen
+        var fileInput = document.getElementById('member-photo-file');
+        if (fileInput.files && fileInput.files[0]) {
+          try {
+            var url = await uploadImage(fileInput);
+            if (url) payload.photoUrl = url;
+          } catch (e) { alert('Image upload failed: ' + e.message); return; }
+        }
+
+        var memberId = form.elements['id'].value;
+        var url = memberId ? '/api/members/' + memberId : '/api/members';
+        var method = memberId ? 'PUT' : 'POST';
+
+        try {
+          var res = await apiFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          if (res.ok) { closeAdminModal(); loadMembers(); }
+          else { var d = await res.json(); alert(d.error || 'Failed to save.'); }
+        } catch (e) { alert('Error: ' + e.message); }
+      });
+    }
+
+    async function deleteMember(id) {
+      if (!confirm('Delete this member permanently?')) return;
+      try {
+        await apiFetch('/api/members/' + id, { method: 'DELETE' });
+        loadMembers();
+      } catch (e) { alert('Error: ' + e.message); }
+    }
+
+    /* ========================================================
+     * WORK ITEMS CRUD
+     * ======================================================== */
+    var workItemsData = [];
+
+    async function loadWorkItems() {
+      try {
+        var res = await apiFetch('/api/work-items');
+        workItemsData = await res.json();
+        renderWorkItemsTable();
+      } catch (e) { console.error('Failed to load work items', e); }
+    }
+
+    function renderWorkItemsTable() {
+      var tbody = document.getElementById('work-items-table-body');
+      if (!workItemsData.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-text-muted">No work items found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = workItemsData.map(function(w) {
+        return '<tr class="border-b border-border-hairline hover:bg-surface-container/50 transition-colors">' +
+          '<td class="p-3"><img src="' + w.thumbnailUrl + '" class="w-16 h-10 object-cover border border-border-hairline" alt=""></td>' +
+          '<td class="p-3 font-medium">' + w.title + '</td>' +
+          '<td class="p-3 text-text-muted">' + w.category + '</td>' +
+          '<td class="p-3 text-text-muted">' + w.sortOrder + '</td>' +
+          '<td class="p-3"><div class="flex gap-2">' +
+            '<button onclick="openWorkItemModal(' + w.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button onclick="deleteWorkItem(' + w.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+          '</div></td></tr>';
+      }).join('');
+    }
+
+    function openWorkItemModal(id) {
+      var w = id ? workItemsData.find(function(x) { return x.id === id; }) : null;
+      var title = w ? 'EDIT WORK ITEM' : 'ADD WORK ITEM';
+      var html = '<form id="work-item-form" class="space-y-4">' +
+        '<input type="hidden" name="id" value="' + (w ? w.id : '') + '">' +
+        field('Title', 'title', w ? w.title : '', 'text', true) +
+        field('Thumbnail URL', 'thumbnailUrl', w ? w.thumbnailUrl : '', 'text', true) +
+        '<div><label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">Or Upload Thumbnail</label>' +
+          '<input type="file" id="wi-thumb-file" accept="image/*" class="w-full text-sm text-text-muted file:mr-3 file:px-3 file:py-1.5 file:border file:border-border-subtle file:bg-surface-container file:text-on-surface file:text-xs file:uppercase file:cursor-pointer"></div>' +
+        field('Category', 'category', w ? w.category : '') +
+        field('Video URL', 'videoUrl', w ? (w.videoUrl || '') : '', 'url') +
+        field('Description', 'description', w ? (w.description || '') : '', 'textarea') +
+        field('Sort Order', 'sortOrder', w ? w.sortOrder : 0, 'number') +
+        '<div class="pt-3 flex justify-end"><button type="submit" class="px-5 py-2.5 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors"><span class="material-symbols-outlined text-[14px] align-middle mr-1">save</span>SAVE</button></div>' +
+        '</form>';
+      openAdminModal(title, html);
+
+      document.getElementById('work-item-form').addEventListener('submit', async function(ev) {
+        ev.preventDefault();
+        var form = ev.target;
+        var payload = formToObj(form);
+        var fileInput = document.getElementById('wi-thumb-file');
+        if (fileInput.files && fileInput.files[0]) {
+          try { var u = await uploadImage(fileInput); if (u) payload.thumbnailUrl = u; }
+          catch (e) { alert('Upload failed'); return; }
+        }
+        var itemId = form.elements['id'].value;
+        var url = itemId ? '/api/work-items/' + itemId : '/api/work-items';
+        var method = itemId ? 'PUT' : 'POST';
+        try {
+          var res = await apiFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          if (res.ok) { closeAdminModal(); loadWorkItems(); }
+          else { var d = await res.json(); alert(d.error || 'Failed'); }
+        } catch (e) { alert('Error: ' + e.message); }
+      });
+    }
+
+    async function deleteWorkItem(id) {
+      if (!confirm('Delete this work item permanently?')) return;
+      try { await apiFetch('/api/work-items/' + id, { method: 'DELETE' }); loadWorkItems(); }
+      catch (e) { alert('Error: ' + e.message); }
+    }
+
+    /* ========================================================
+     * WIRE PHOTOS CRUD
+     * ======================================================== */
+    var wirePhotosData = [];
+
+    async function loadWirePhotos() {
+      try {
+        var res = await apiFetch('/api/wire-photos');
+        wirePhotosData = await res.json();
+        renderWirePhotosTable();
+      } catch (e) { console.error('Failed to load wire photos', e); }
+    }
+
+    function renderWirePhotosTable() {
+      var tbody = document.getElementById('wire-photos-table-body');
+      if (!wirePhotosData.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-text-muted">No wire photos found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = wirePhotosData.map(function(p) {
+        return '<tr class="border-b border-border-hairline hover:bg-surface-container/50 transition-colors">' +
+          '<td class="p-3"><img src="' + p.imageUrl + '" class="w-12 h-12 object-cover border border-border-hairline" alt=""></td>' +
+          '<td class="p-3 font-medium">' + p.title + '</td>' +
+          '<td class="p-3 text-text-muted">' + (p.reelTag || '-') + '</td>' +
+          '<td class="p-3 text-text-muted">' + p.sortOrder + '</td>' +
+          '<td class="p-3"><div class="flex gap-2">' +
+            '<button onclick="openWirePhotoModal(' + p.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button onclick="deleteWirePhoto(' + p.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+          '</div></td></tr>';
+      }).join('');
+    }
+
+    function openWirePhotoModal(id) {
+      var p = id ? wirePhotosData.find(function(x) { return x.id === id; }) : null;
+      var title = p ? 'EDIT WIRE PHOTO' : 'ADD WIRE PHOTO';
+      var html = '<form id="wire-photo-form" class="space-y-4">' +
+        '<input type="hidden" name="id" value="' + (p ? p.id : '') + '">' +
+        field('Title', 'title', p ? p.title : '', 'text', true) +
+        field('Image URL', 'imageUrl', p ? p.imageUrl : '', 'text', true) +
+        '<div><label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">Or Upload Image</label>' +
+          '<input type="file" id="wp-img-file" accept="image/*" class="w-full text-sm text-text-muted file:mr-3 file:px-3 file:py-1.5 file:border file:border-border-subtle file:bg-surface-container file:text-on-surface file:text-xs file:uppercase file:cursor-pointer"></div>' +
+        field('Description', 'description', p ? (p.description || '') : '', 'textarea') +
+        field('Reel Tag', 'reelTag', p ? (p.reelTag || '') : '') +
+        field('Sort Order', 'sortOrder', p ? p.sortOrder : 0, 'number') +
+        '<div class="pt-3 flex justify-end"><button type="submit" class="px-5 py-2.5 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors"><span class="material-symbols-outlined text-[14px] align-middle mr-1">save</span>SAVE</button></div>' +
+        '</form>';
+      openAdminModal(title, html);
+
+      document.getElementById('wire-photo-form').addEventListener('submit', async function(ev) {
+        ev.preventDefault();
+        var form = ev.target;
+        var payload = formToObj(form);
+        var fileInput = document.getElementById('wp-img-file');
+        if (fileInput.files && fileInput.files[0]) {
+          try { var u = await uploadImage(fileInput); if (u) payload.imageUrl = u; }
+          catch (e) { alert('Upload failed'); return; }
+        }
+        var photoId = form.elements['id'].value;
+        var url = photoId ? '/api/wire-photos/' + photoId : '/api/wire-photos';
+        var method = photoId ? 'PUT' : 'POST';
+        try {
+          var res = await apiFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          if (res.ok) { closeAdminModal(); loadWirePhotos(); }
+          else { var d = await res.json(); alert(d.error || 'Failed'); }
+        } catch (e) { alert('Error: ' + e.message); }
+      });
+    }
+
+    async function deleteWirePhoto(id) {
+      if (!confirm('Delete this wire photo permanently?')) return;
+      try { await apiFetch('/api/wire-photos/' + id, { method: 'DELETE' }); loadWirePhotos(); }
+      catch (e) { alert('Error: ' + e.message); }
+    }
+
+    /* ========================================================
+     * APPLICATIONS (Read-only + status change)
+     * ======================================================== */
+    var applicationsData = [];
+
+    async function loadApplications() {
+      try {
+        var res = await apiFetch('/api/applications');
+        if (res.status === 401) return; // not authed yet
+        applicationsData = await res.json();
+        renderApplicationsTable();
+      } catch (e) { console.error('Failed to load applications', e); }
+    }
+
+    function renderApplicationsTable() {
+      var tbody = document.getElementById('applications-table-body');
+      if (!applicationsData.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-text-muted">No applications received yet.</td></tr>';
+        return;
+      }
+      var statusColors = { 'new': 'text-blue-400', 'reviewed': 'text-yellow-400', 'accepted': 'text-emerald-400', 'rejected': 'text-red-400' };
+      tbody.innerHTML = applicationsData.map(function(a) {
+        var dateStr = new Date(a.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        return '<tr class="border-b border-border-hairline hover:bg-surface-container/50 transition-colors">' +
+          '<td class="p-3 font-medium">' + a.name + '</td>' +
+          '<td class="p-3 text-text-muted">' + a.email + '</td>' +
+          '<td class="p-3 text-text-muted">' + a.department + '</td>' +
+          '<td class="p-3">' + (a.portfolioLink ? '<a href="' + a.portfolioLink + '" target="_blank" class="text-primary-container hover:underline text-xs uppercase">View</a>' : '-') + '</td>' +
+          '<td class="p-3 text-text-muted max-w-[200px] truncate" title="' + (a.message || '').replace(/"/g, '&quot;') + '">' + (a.message || '-') + '</td>' +
+          '<td class="p-3"><select onchange="updateAppStatus(' + a.id + ', this.value)" class="bg-surface-pitch border border-border-subtle px-2 py-1 text-xs uppercase font-mono ' + (statusColors[a.status] || '') + '">' +
+            '<option value="new"' + (a.status === 'new' ? ' selected' : '') + '>New</option>' +
+            '<option value="reviewed"' + (a.status === 'reviewed' ? ' selected' : '') + '>Reviewed</option>' +
+            '<option value="accepted"' + (a.status === 'accepted' ? ' selected' : '') + '>Accepted</option>' +
+            '<option value="rejected"' + (a.status === 'rejected' ? ' selected' : '') + '>Rejected</option>' +
+          '</select></td>' +
+          '<td class="p-3 text-text-muted text-xs">' + dateStr + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    async function updateAppStatus(id, status) {
+      try {
+        await apiFetch('/api/applications/' + id, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: status })
+        });
+        loadApplications();
+      } catch (e) { alert('Error: ' + e.message); }
+    }
+
+    /* ========================================================
+     * FORM HELPERS
+     * ======================================================== */
+    function field(label, name, value, type, required) {
+      type = type || 'text';
+      var reqAttr = required ? ' required' : '';
+      if (type === 'textarea') {
+        return '<div><label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">' + label + '</label>' +
+          '<textarea name="' + name + '" rows="3" class="w-full bg-surface-pitch border border-border-subtle p-3 text-on-surface text-sm focus:outline-none focus:border-primary-container transition-colors"' + reqAttr + '>' + escHtml(value || '') + '</textarea></div>';
+      }
+      return '<div><label class="font-label-mono-sm text-[11px] tracking-[0.1em] text-text-muted uppercase block mb-1">' + label + '</label>' +
+        '<input type="' + type + '" name="' + name + '" value="' + escAttr(value) + '" class="w-full bg-surface-pitch border border-border-subtle p-3 text-on-surface text-sm focus:outline-none focus:border-primary-container transition-colors"' + reqAttr + '></div>';
+    }
+
+    function formToObj(form) {
+      var obj = {};
+      var els = form.elements;
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.name && el.name !== 'id' && el.type !== 'file' && el.type !== 'submit') {
+          obj[el.name] = el.value;
+        }
+      }
+      if (obj.sortOrder !== undefined) obj.sortOrder = parseInt(obj.sortOrder) || 0;
+      return obj;
+    }
+
+    function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function escAttr(s) { return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    /* ========================================================
+     * KEYBOARD
+     * ======================================================== */
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAdminModal();
+    });
+
+    /* ========================================================
+     * INIT — check session on page load
+     * ======================================================== */
+    checkSession();
+  </script>
+</body>
+</html>

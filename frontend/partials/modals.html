@@ -1,0 +1,393 @@
+<!--
+  modals.html
+  Markup for all five site modals:
+  1. #member-dossier-modal - Collective Member Dossier Lightbox
+  2. #wire-photo-modal     - Wire Photo Lightbox
+  3. #reel-modal           - Showreel Video Viewer
+  4. #apply-modal          - Crew Application Form Sheet
+  5. #pitch-modal          - Story Pitch Modal Sheet
+  Injected into <div id="modal-root">
+  Depends on: main.js, modals.js
+-->
+      <!-- MODAL: MEMBER DOSSIER / FULL FRAME LIGHTBOX                               -->
+      <!-- ========================================================================= -->
+      <div id="member-dossier-modal"
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 transition-opacity duration-300 opacity-0 pointer-events-auto"
+        onclick="if(event.target === this) { event.stopPropagation(); closeMemberDossier(); }">
+        <div
+          class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.85)] max-h-[92vh] overflow-y-auto transform scale-95 transition-all duration-300"
+          id="dossier-container">
+
+          <!-- Top Technical Header Bar -->
+          <div
+            class="flex items-center justify-between px-6 py-4 border-b border-border-hairline bg-surface-pitch/90 sticky top-0 z-20 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-primary-container rec-dot"></span>
+              <span class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest">
+                <span class="text-primary-container">#<span id="dossier-index">01</span></span>
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span
+                class="hidden sm:inline-block font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest border border-border-hairline px-2.5 py-0.5 bg-surface-pitch">
+                NIST PR CELL
+              </span>
+              <button type="button" onclick="event.preventDefault(); event.stopPropagation(); closeMemberDossier();"
+                class="text-text-muted hover:text-primary transition-colors flex items-center gap-1 font-label-mono-sm text-label-mono-sm uppercase cursor-pointer p-1.5 hover:bg-surface-pitch border border-transparent hover:border-border-subtle"
+                aria-label="Close Dossier">
+                <span class="hidden sm:inline">CLOSE</span>
+                <span class="material-symbols-outlined text-[22px]">close</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Modal Content Grid -->
+          <div class="p-6 lg:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+
+            <!-- Left: Full Image Frame with cinematic viewfinder corners -->
+            <div class="md:col-span-5 flex flex-col">
+              <div
+                class="relative w-full border border-border-hairline bg-surface-pitch overflow-hidden group flex items-center justify-center flex-grow min-h-[340px] md:min-h-[420px]">
+                <!-- Viewfinder Crosshair & Corner Marks -->
+                <div
+                  class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-primary-container/70 pointer-events-none z-10">
+                </div>
+                <div
+                  class="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-primary-container/70 pointer-events-none z-10">
+                </div>
+                <div
+                  class="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-primary-container/70 pointer-events-none z-10">
+                </div>
+                <div
+                  class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-primary-container/70 pointer-events-none z-10">
+                </div>
+
+                <!-- Full Uncropped/High-res Image -->
+                <img id="dossier-image" src="" alt="Collective Member"
+                  class="w-full h-full object-contain max-h-[460px] transition-transform duration-500">
+
+                <!-- Image Bottom Metadata Strip -->
+                <div
+                  class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
+                  <span
+                    class="font-label-mono-sm text-[10px] text-primary-container bg-surface-pitch/90 px-2 py-0.5 uppercase tracking-widest border border-border-hairline backdrop-blur-sm"
+                    id="dossier-cam-tag">
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Detailed Information Frame -->
+            <div class="md:col-span-7 flex flex-col justify-between space-y-6">
+              <div>
+                <!-- Role Badge -->
+                <div
+                  class="inline-flex items-center gap-2 px-3 py-1 bg-surface-pitch border border-primary-container/60 font-label-mono-sm text-label-mono-sm uppercase text-primary-container tracking-widest mb-3">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                  <span id="dossier-role">LEAD CINEMATOGRAPHER &amp; CORDINATOR</span>
+                </div>
+
+                <!-- Member Name -->
+                <h3 id="dossier-name"
+                  class="font-headline-lg text-headline-lg-mobile sm:text-headline-lg uppercase tracking-tight text-on-surface leading-none">
+                  GIRIDHARI PADHY
+                </h3>
+
+                <!-- Quote / Philosophy -->
+                <div
+                  class="mt-4 p-4 bg-surface-pitch border-l-2 border-primary-container text-text-muted font-body-md text-body-md italic leading-relaxed"
+                  id="dossier-quote">
+                  "Frame every moment like it's the opening shot of an indie festival winner."
+                </div>
+
+                <!-- Bio & Responsibilities -->
+                <div class="mt-5 space-y-2">
+                  <p class="font-body-sm text-body-sm text-on-surface/90 leading-relaxed" id="dossier-bio">
+                    Directs flagship productions, cinematic lighting schemas, camera rigs, and NIST University PR Cell
+                    transmedia storytelling.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Meta Details & Controls -->
+              <div class="pt-5 border-t border-border-hairline space-y-4">
+                <div class="grid grid-cols-2 gap-3 font-label-mono-sm text-label-mono-sm">
+                  <div class="p-3 bg-surface-pitch border border-border-hairline">
+                    <span class="text-on-surface uppercase font-medium" id="dossier-dept">CSE '23</span>
+                  </div>
+                  <div class="p-3 bg-surface-pitch border border-border-hairline">
+                    <span class="text-primary-container uppercase font-medium">ACTIVE DIRECTORY</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                  <a id="dossier-social-link" href="https://www.instagram.com/hiddenbharatwithbiki"
+                    class="group inline-flex items-center gap-2 px-4 py-2 bg-surface-pitch border border-border-subtle hover:border-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase tracking-wider transition-colors">
+                    <span class="material-symbols-outlined text-[16px] text-primary-container">arrow_outward</span>
+                    <span id="dossier-handle">@hiddenbharatwithbiki</span>
+                  </a>
+
+                  <!-- Prev / Next Navigation -->
+                  <div class="flex items-center gap-2">
+                    <button onclick="navigateDossier(-1)"
+                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
+                      title="Previous Member">
+                      <span class="material-symbols-outlined text-[18px]">west</span>
+                    </button>
+                    <button onclick="navigateDossier(1)"
+                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
+                      title="Next Member">
+                      <span class="material-symbols-outlined text-[18px]">east</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- MODAL: WIRE PHOTO FULL FRAME LIGHTBOX                                     -->
+      <!-- ========================================================================= -->
+      <div id="wire-photo-modal"
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 transition-opacity duration-300 opacity-0 pointer-events-auto"
+        onclick="if(event.target === this) { event.stopPropagation(); closeWirePhoto(); }">
+        <div
+          class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.85)] max-h-[92vh] overflow-y-auto transform scale-95 transition-all duration-300"
+          id="wire-container">
+
+          <!-- Header Bar -->
+          <div
+            class="flex items-center justify-between px-6 py-4 border-b border-border-hairline bg-surface-pitch/90 sticky top-0 z-20 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-primary-container rec-dot"></span>
+              <span class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest"
+                id="wire-tag">
+                // ON THE WIRE � ARCHIVE
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span
+                class="hidden sm:inline-block font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest border border-border-hairline px-2.5 py-0.5 bg-surface-pitch">
+                4K RAW CAPTURE
+              </span>
+              <button type="button" onclick="event.preventDefault(); event.stopPropagation(); closeWirePhoto();"
+                class="text-text-muted hover:text-primary transition-colors flex items-center gap-1 font-label-mono-sm text-label-mono-sm uppercase cursor-pointer p-1.5 hover:bg-surface-pitch border border-transparent hover:border-border-subtle"
+                aria-label="Close Lightbox">
+                <span class="hidden sm:inline">CLOSE</span>
+                <span class="material-symbols-outlined text-[22px]">close</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6 lg:p-8 flex flex-col space-y-6">
+            <div
+              class="relative w-full border border-border-hairline bg-surface-pitch overflow-hidden flex items-center justify-center min-h-[350px] max-h-[560px]">
+              <!-- Viewfinder corners -->
+              <div
+                class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-primary-container/70 pointer-events-none z-10">
+              </div>
+              <div
+                class="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-primary-container/70 pointer-events-none z-10">
+              </div>
+              <div
+                class="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-primary-container/70 pointer-events-none z-10">
+              </div>
+              <div
+                class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-primary-container/70 pointer-events-none z-10">
+              </div>
+
+              <img id="wire-image" src="" alt="Wire Dispatch Photo" class="w-full h-full object-contain max-h-[540px]">
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-border-hairline">
+              <div>
+                <span class="font-label-mono-sm text-label-mono-sm text-primary-container uppercase" id="wire-reel-id">[
+                  REEL #104 ]</span>
+                <h3 class="font-headline-md text-headline-md uppercase text-on-surface mt-1" id="wire-title">TESTING
+                  ANAMORPHIC FLARES ON QUAD FOUNTAINS</h3>
+                <p class="font-body-sm text-body-sm text-text-muted mt-1 max-w-xl" id="wire-desc">Optical tests
+                  capturing 2.39:1 horizontal anamorphic streak flare patterns across the illuminated university quad
+                  fountains at midnight.</p>
+              </div>
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <button onclick="navigateWire(-1)"
+                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
+                  title="Previous Photo">
+                  <span class="material-symbols-outlined text-[20px]">west</span>
+                </button>
+                <button onclick="navigateWire(1)"
+                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
+                  title="Next Photo">
+                  <span class="material-symbols-outlined text-[20px]">east</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: SHOWREEL VIEWER                                                    -->
+      <!-- ========================================================================= -->
+      <div id="reel-modal"
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        <div
+          class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline p-6 flex flex-col shadow-2xl">
+          <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-4">
+            <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">[ MEDIAMOVERS ANNUAL SHOWREEL
+              ]</span>
+            <button class="text-text-muted hover:text-on-surface transition-colors"
+              onclick="document.getElementById('reel-modal').classList.add('hidden'); document.getElementById('reel-video').pause();">
+              <span class="material-symbols-outlined text-[24px]">close</span>
+            </button>
+          </div>
+          <div
+            class="w-full aspect-video bg-surface-pitch flex items-center justify-center border border-border-hairline relative overflow-hidden group">
+            <video id="reel-video" class="w-full h-full object-contain" controls>
+              <source src="team\Video-3002.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+      <!-- ========================================================================= -->
+      <!-- MODAL: CREW APPLICATION SHEET                                             -->
+      <!-- ========================================================================= -->
+      <div id="apply-modal"
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        <div
+          class="relative w-full max-w-xl bg-surface-slate border border-border-hairline p-8 flex flex-col shadow-2xl">
+          <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-6">
+            <div>
+              <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">// CALLBOARD ADMISSION</span>
+              <h3 class="font-headline-md text-headline-md uppercase text-on-surface">APPLY FOR SPRING 2025</h3>
+            </div>
+            <button class="text-text-muted hover:text-on-surface transition-colors"
+              onclick="document.getElementById('apply-modal').classList.add('hidden')">
+              <span class="material-symbols-outlined text-[24px]">close</span>
+            </button>
+          </div>
+          <form id="crew-apply-form" class="space-y-4">
+            <div>
+              <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">STUDENT FULL
+                NAME</label>
+              <input name="name" required
+                class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                placeholder="e.g. Priyanshu Panda" type="text">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">STUDENT
+                  EMAIL</label>
+                <input name="email" required
+                  class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                  placeholder="priyanshu@nist.edu" type="email">
+              </div>
+              <div>
+                <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">PRIMARY
+                  SPECIALTY</label>
+                <select name="department"
+                  class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors">
+                  <option value="Cinematography & Cam-Op">Cinematography &amp; Cam-Op</option>
+                  <option value="Broadcast & Live Switcher">Broadcast &amp; Live Switcher</option>
+                  <option value="Editing & Color Suite">Editing &amp; Color Suite</option>
+                  <option value="Campus Journalism & Script">Campus Journalism &amp; Script</option>
+                  <option value="Motion Design & VFX">Motion Design &amp; VFX</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">PORTFOLIO /
+                DRIVE LINK</label>
+              <input name="portfolioLink"
+                class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                placeholder="https://drive.google.com/..." type="url">
+            </div>
+            <div>
+              <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">WHY DO YOU WANT
+                TO SHOOT WITH US?</label>
+              <textarea name="message"
+                class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                placeholder="Tell us about what you want to create on campus..." rows="3"></textarea>
+            </div>
+            <div id="apply-form-status" class="hidden text-xs font-mono py-2"></div>
+            <div class="pt-4 flex items-center justify-end gap-4">
+              <button
+                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors"
+                onclick="document.getElementById('apply-modal').classList.add('hidden')" type="button">CANCEL</button>
+              <button id="apply-submit-btn"
+                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all"
+                type="submit">SUBMIT TO CALLBOARD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- ========================================================================= -->
+      <!-- MODAL: PITCH A STORY                                                      -->
+      <!-- ========================================================================= -->
+      <div id="pitch-modal"
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        <div
+          class="relative w-full max-w-xl bg-surface-slate border border-border-hairline p-8 flex flex-col shadow-2xl">
+          <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-6">
+            <div>
+              <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">// EDITORIAL SUBMISSION</span>
+              <h3 class="font-headline-md text-headline-md uppercase text-on-surface">PITCH A CAMPUS STORY</h3>
+            </div>
+            <button class="text-text-muted hover:text-on-surface transition-colors"
+              onclick="document.getElementById('pitch-modal').classList.add('hidden')">
+              <span class="material-symbols-outlined text-[24px]">close</span>
+            </button>
+          </div>
+          <form class="space-y-4"
+            onsubmit="event.preventDefault(); alert('Story pitch transmitted to the Editor-in-Chief.'); document.getElementById('pitch-modal').classList.add('hidden');">
+            <div>
+              <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">WORKING STORY
+                TITLE</label>
+              <input
+                class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                placeholder="e.g. The Untold Story of NIST Formula Student Garage" required="" type="text">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">PITCH
+                  FORMAT</label>
+                <select
+                  class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors">
+                  <option>Mini-Documentary (5-10m)</option>
+                  <option>Instagram Reel Series</option>
+                  <option>Written Investigative Essay</option>
+                  <option>Photo Journal Monograph</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">TARGET
+                  TIMELINE</label>
+                <input
+                  class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                  placeholder="e.g. Next 3 Weeks" type="text">
+              </div>
+            </div>
+            <div>
+              <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">SYNOPSIS &amp;
+                ACCESS</label>
+              <textarea
+                class="w-full bg-surface-pitch border border-border-subtle p-3 font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-colors"
+                placeholder="Briefly describe the story premise, who is involved, and what footage we can capture..."
+                rows="4"></textarea>
+            </div>
+            <div class="pt-4 flex items-center justify-end gap-4">
+              <button
+                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors"
+                onclick="document.getElementById('pitch-modal').classList.add('hidden')" type="button">CANCEL</button>
+              <button
+                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all"
+                type="submit">TRANSMIT TO DESK</button>
+            </div>
+          </form>
+        </div>
+      </div>

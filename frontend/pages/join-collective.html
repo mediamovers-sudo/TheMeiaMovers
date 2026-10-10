@@ -1,0 +1,55 @@
+<!--
+  join-collective.html
+  Join Collective call-to-action page partial.
+  Injected into <main id="app"> as <div data-page="join-collective">
+  Depends on: main.js, router.js
+-->
+        <!-- 08 // JOIN THE COLLECTIVE CALL TO ACTION                                  -->
+        <!-- ========================================================================= -->
+        <section class="relative w-full px-margin-mobile lg:px-margin py-32 bg-surface-pitch overflow-hidden" id="join">
+          <!-- Architectural Grid Background Accent -->
+          <div class="absolute inset-0 pointer-events-none opacity-10 flex items-center justify-center">
+            <div
+              class="font-headline-xl text-[240px] uppercase font-bold text-border-subtle tracking-tighter select-none">
+              ROLLING
+            </div>
+          </div>
+          <div class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center reveal-item">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 bg-surface-slate border border-border-hairline font-label-mono-sm text-label-mono-sm uppercase text-primary-container mb-6">
+              <span class="w-1.5 h-1.5 bg-primary-container rounded-full rec-dot"></span>
+              CREW CALLBOARD // SPRING 2025 COHORT OPEN
+            </div>
+            <h2
+              class="font-headline-xl text-headline-xl-mobile sm:text-headline-xl lg:text-display-hero uppercase tracking-tighter text-on-surface leading-none">
+              HAVE A STORY <span class="text-primary-container">TO TELL?</span>
+            </h2>
+            <p class="mt-6 font-body-lg text-body-lg text-text-muted max-w-2xl leading-relaxed">
+              The slate is marked, the sensor is recording. Whether you hold a cinema camera, command a sound mixer,
+              write
+              searing campus chronicles, or design kinetic titles � your place on the call sheet is ready.
+            </p>
+            <!-- Action Button Group -->
+            <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <button
+                class="w-full sm:w-auto px-8 py-4 bg-primary-container text-on-surface font-label-mono-lg text-label-mono-lg uppercase font-medium tracking-wider hover:bg-accent-hover hover:shadow-[0_0_24px_rgba(255,94,30,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                onclick="document.getElementById('apply-modal').classList.remove('hidden')">
+                APPLY FOR CREW [SPRING '25]
+              </button>
+              <button
+                class="w-full sm:w-auto px-8 py-4 bg-surface-pitch border border-border-subtle text-on-surface font-label-mono-lg text-label-mono-lg uppercase tracking-wider hover:border-on-surface hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                onclick="document.getElementById('pitch-modal').classList.remove('hidden')">
+                PITCH A STORY / REEL
+              </button>
+            </div>
+            <div class="mt-12 flex items-center gap-6 font-label-mono-sm text-label-mono-sm text-text-muted uppercase">
+              <span class="">NIST BERHAMPUR</span>
+              <span class="">�</span>
+              <span class="">NO PRIOR GEAR REQUIRED</span>
+              <span class="">�</span>
+              <span class="">APPRENTICESHIPS AVAILABLE</span>
+            </div>
+          </div>
+        </section>
+        <!-- ========================================================================= -->
+        <!-- ========================================================================= -->
