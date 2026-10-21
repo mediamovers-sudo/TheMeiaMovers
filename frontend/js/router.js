@@ -6,33 +6,45 @@
  * Depends on: reveal.js (window.resetRevealAnimations), drawer.js (window.isDrawerOpen, window.closeDrawer)
  */
 (function () {
-  var ROUTES = ['about', 'what-we-do', 'our-work', 'behind-the-scenes', 'stories', 'team', 'community', 'join-collective'];
+  var ROUTES = ['about', 'what-we-do', 'our-work', 'behind-the-scenes', 'stories', 'team', 'join-collective'];
   var DEFAULT_ROUTE = 'about';
   var activeClasses = ['text-on-surface', 'border-b-2', 'border-primary-container'];
   var inactiveClasses = ['text-text-muted'];
   var currentRoute = '';
 
-  function normalizeRoute(r) {
-    if (r === 'community') return 'team';
-    return r;
-  }
-
   function getRouteFromHash() {
-    var hash = location.hash.replace(/^#\/?/, '');
-    if (hash === 'community') return 'team';
-    return ROUTES.indexOf(hash) !== -1 ? hash : DEFAULT_ROUTE;
+    var rawHash = location.hash.replace(/^#\/?/, '').toLowerCase().trim();
+
+    // Redirect legacy #/community bookmarks to #/team
+    if (rawHash === 'community') {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#/team');
+      } else {
+        location.hash = '#/team';
+      }
+      return 'team';
+    }
+
+    return ROUTES.indexOf(rawHash) !== -1 ? rawHash : DEFAULT_ROUTE;
   }
 
-  function navigate(rawRoute) {
-    var route = normalizeRoute(rawRoute);
+  function navigate(route) {
+    if (route === 'community') {
+      route = 'team';
+      if (history.replaceState) {
+        history.replaceState(null, '', '#/team');
+      } else {
+        location.hash = '#/team';
+      }
+    }
+
     if (route === currentRoute) return;
     currentRoute = route;
 
     // Show/hide page views
     var views = document.querySelectorAll('[data-page]');
     views.forEach(function (v) {
-      var pageName = normalizeRoute(v.dataset.page);
-      if (pageName === route) {
+      if (v.dataset.page === route) {
         v.removeAttribute('hidden');
         v.classList.remove('hidden');
       } else {
@@ -47,8 +59,7 @@
     // Update nav active state (desktop navigation bar)
     document.querySelectorAll('[data-path]').forEach(function (link) {
       if (link.closest('#mobile-drawer')) return;
-      var path = normalizeRoute(link.dataset.path);
-      var isActive = path === route;
+      var isActive = link.dataset.path === route;
       if (isActive) {
         link.setAttribute('aria-current', 'page');
         activeClasses.forEach(function (c) { link.classList.add(c); });
@@ -64,8 +75,7 @@
 
     // Update mobile drawer nav active state
     document.querySelectorAll('#mobile-drawer .drawer-link').forEach(function (link) {
-      var path = normalizeRoute(link.dataset.path);
-      if (path === route) {
+      if (link.dataset.path === route) {
         link.classList.add('text-on-surface');
         link.classList.remove('text-text-muted');
       } else {

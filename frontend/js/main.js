@@ -12,7 +12,7 @@
  * Depends on: api.js, reveal.js, modals.js, drawer.js, ui.js, router.js
  */
 document.addEventListener('DOMContentLoaded', async function () {
-  var ROUTES = ['about', 'what-we-do', 'our-work', 'behind-the-scenes', 'stories', 'community', 'join-collective'];
+  var ROUTES = ['about', 'what-we-do', 'our-work', 'behind-the-scenes', 'stories', 'team', 'join-collective'];
   var appEl = document.getElementById('app');
   var modalRoot = document.getElementById('modal-root');
 
