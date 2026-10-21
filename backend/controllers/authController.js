@@ -33,9 +33,10 @@ const login = async (req, res, next) => {
 
     // Set token in httpOnly, secure, sameSite cookie — never returned in JSON body
     res.cookie('token', token, {
+      path: '/',
       httpOnly: true,
       secure: NODE_ENV === 'production',
-      sameSite: NODE_ENV === 'production' ? 'strict' : 'lax',
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -53,9 +54,10 @@ const login = async (req, res, next) => {
 
 const logout = (req, res) => {
   res.clearCookie('token', {
+    path: '/',
     httpOnly: true,
     secure: NODE_ENV === 'production',
-    sameSite: NODE_ENV === 'production' ? 'strict' : 'lax'
+    sameSite: 'lax'
   });
 
   return res.status(200).json({

@@ -7,11 +7,15 @@ backend/node_modules/
 backend/.env
 *.env.local
 
-# SQLite Database
+# SQLite / Local Database files
 *.db
 *.db-journal
 backend/prisma/*.db
 backend/prisma/*.db-journal
+
+# Uploads
+uploads/
+backend/uploads/
 
 # Logs
 logs/
@@ -25,3 +29,4 @@ Thumbs.db
 
 # Trash archive
 _trash/
+

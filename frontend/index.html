@@ -10,6 +10,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Anton&amp;family=JetBrains+Mono:wght@400;500&amp;family=Outfit:wght@400;500;600&amp;display=swap"
     rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     rel="stylesheet">
   <link
@@ -30,16 +33,19 @@
   <header
     class="fixed top-0 left-0 right-0 z-40 bg-surface-pitch/90 backdrop-blur-md border-b border-border-hairline transition-all duration-300">
     <div class="h-20 w-full px-margin-mobile lg:px-margin flex items-center justify-between">
-      <div class="flex items-center gap-4"><a class="flex items-center gap-3.5 group" data-path="about"
-          href="#/about"><img alt="IMG-20250221-WA0014.jpg"
-            class="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            src="IMG-20250221-WA0014.jpg">
-          <div class="flex flex-col"><span
-              class="font-label-mono-lg text-label-mono-lg tracking-wider text-on-surface uppercase group-hover:text-primary transition-colors">The
-              MediaMovers</span><span
-              class="font-label-mono-sm text-label-mono-sm text-text-muted tracking-widest uppercase">NIST PR
-              CELL</span></div>
-        </a></div>
+      <div class="flex items-center">
+        <a class="header-brand-link group" data-path="about" href="#/about"
+          aria-label="The Media Movers - An initiative by the NIST PR Cell">
+          <img alt="The MediaMovers Logo" class="header-brand-logo" src="/IMG-20250221-WA0014.jpg">
+          <div class="header-brand-text">
+            <div class="header-brand-title">
+              <span class="header-brand-the">The</span>
+              <span class="header-brand-name">Media Movers</span>
+            </div>
+            <span class="header-brand-subtitle">An initiative by the NIST PR Cell</span>
+          </div>
+        </a>
+      </div>
       <nav class="hidden xl:flex items-center gap-8"
         data-active-classes="text-on-surface border-b-2 border-primary-container"><a aria-current="page"
           class="font-label-mono-sm uppercase transition-all py-2 text-on-surface border-b-2 border-primary-container hover:tracking-wider"
@@ -57,7 +63,7 @@
           data-path="stories" href="#/stories">[Stories]<span
             class="absolute bottom-0 left-0 w-0 h-[2px] bg-primary-container transition-all duration-300 group-hover:w-full"></span></a><a
           class="relative font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface hover:tracking-wider transition-all py-2 group"
-          data-path="community" href="#/community">[Community]<span
+          data-path="team" href="#/team">[Team]<span
             class="absolute bottom-0 left-0 w-0 h-[2px] bg-primary-container transition-all duration-300 group-hover:w-full"></span></a>
       </nav>
       <div class="flex items-center gap-6"><a
@@ -105,8 +111,8 @@
         The Scenes]</a>
       <a data-path="stories" href="#/stories"
         class="drawer-link font-label-mono-sm text-label-mono-sm uppercase tracking-wider text-text-muted hover:text-on-surface py-4 border-b border-border-hairline transition-colors block">[Stories]</a>
-      <a data-path="community" href="#/community"
-        class="drawer-link font-label-mono-sm text-label-mono-sm uppercase tracking-wider text-text-muted hover:text-on-surface py-4 border-b border-border-hairline transition-colors block">[Community]</a>
+      <a data-path="team" href="#/team"
+        class="drawer-link font-label-mono-sm text-label-mono-sm uppercase tracking-wider text-text-muted hover:text-on-surface py-4 border-b border-border-hairline transition-colors block">[Team]</a>
     </nav>
     <div class="shrink-0 px-6 pb-8 space-y-4 border-t border-border-hairline pt-6">
       <a data-path="join-collective" href="#/join-collective"
@@ -120,75 +126,90 @@
   <main id="app"
     class="w-full pt-20 bg-surface-pitch min-h-screen relative z-10 flex flex-col text-on-surface select-none"></main>
   <div id="modal-root"></div>
-  <footer class="w-full bg-surface-pitch border-t border-border-hairline text-on-surface relative z-10">
-    <div class="w-full px-margin-mobile lg:px-margin pt-20 pb-16 border-b border-border-hairline">
-      <h2
-        class="font-headline-xl text-headline-xl-mobile lg:text-headline-xl uppercase tracking-tighter text-on-surface leading-none select-none">
-        The MediaMovers <span class="text-primary-container">/</span> NIST University</h2>
-    </div>
-    <div
-      class="w-full px-margin-mobile lg:px-margin py-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 border-b border-border-hairline">
-      <div>
-        <h4 class="font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-text-muted mb-6">// 01
-          Production Divisions</h4>
-        <ul class="space-y-3 font-body-sm text-body-sm text-secondary">
-          <li class="hover:text-primary transition-colors cursor-pointer">Anamorphic Cinema Lab</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Sound Design &amp; Foley Studio</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Broadcast &amp; Transmedia</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Editorial Print &amp; Monograph</li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-text-muted mb-6">// 02 Film
-          Archive</h4>
-        <ul class="space-y-3 font-body-sm text-body-sm text-secondary">
-          <li class="hover:text-primary transition-colors cursor-pointer">Feature Reels (2021–2024)</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">NIST Documentary Series</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Raw Tape Depository</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Screening Schedules</li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-text-muted mb-6">// 03
-          Dispatches</h4>
-        <ul class="space-y-3 font-body-sm text-body-sm text-secondary">
-          <li class="hover:text-primary transition-colors cursor-pointer">Editorial Quarterly</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Cinema Rig Critiques</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Manifestos &amp; Theory</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Field Audio Notes</li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-text-muted mb-6">// 04 Casting
-          &amp; Crew</h4>
-        <ul class="space-y-3 font-body-sm text-body-sm text-secondary">
-          <li class="hover:text-primary transition-colors cursor-pointer">Student Callboard</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Department Heads</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Guest Directors Guild</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Apprenticeship 2025</li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-label-mono-sm text-label-mono-sm uppercase tracking-widest text-text-muted mb-6">// 05
-          Governance</h4>
-        <ul class="space-y-3 font-body-sm text-body-sm text-secondary">
-          <li class="hover:text-primary transition-colors cursor-pointer">Charter of Ethics</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Equipment Syndicate Rules</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">Media Licensing</li>
-          <li class="hover:text-primary transition-colors cursor-pointer">NIST University Mandate</li>
-        </ul>
-      </div>
-    </div>
-    <div
-      class="w-full px-margin-mobile lg:px-margin py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-label-mono-sm text-label-mono-sm text-text-muted">
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer-inner">
+      <div class="site-footer-grid">
+        <!-- LEFT COLUMN: Brand, Description & Socials -->
+        <div class="site-footer-left">
+          <div class="site-footer-brand-title">
+            <img src="/IMG-20250221-WA0014.jpg" alt="The MediaMovers Logo" class="site-footer-logo">
+            <div class="site-footer-brand-text">
+              <span class="site-footer-the">The</span>
+              <span class="site-footer-mediamovers">Media Movers</span>
+            </div>
+          </div>
+          <p class="site-footer-desc">
+            Your trusted partner in creative storytelling and media excellence. We bridge the gap between innovation and
+            communication with cutting-edge content creation.
+          </p>
+          <div class="site-footer-socials">
+            <a href="https://www.instagram.com/the.mediamovers" target="_blank" rel="noopener noreferrer"
+              aria-label="Follow The MediaMovers on Instagram" class="site-footer-social-btn">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+            <!-- LinkedIn link placeholder: Replace # with your official LinkedIn profile URL -->
+            <a href="https://www.linkedin.com/company/the-mediamovers/" target="_blank" rel="noopener noreferrer"
+              aria-label="Connect with The MediaMovers on LinkedIn" class="site-footer-social-btn">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v7.6h2.8v-7.6h-2.8M7.86 6.38a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
 
-      <div><span class="">THE MEDIAMOVERS ● NIST UNIVERSITY ● INSTITUTE PARK ● BERHAMPUR</span></div><a
-        class="group inline-flex items-center gap-1 hover:text-primary transition-colors uppercase tracking-wider text-text-muted"
-        href="#/about"><span
-          class="material-symbols-outlined text-[16px] transform group-hover:-translate-y-1 transition-transform">north</span>BACK
-        TO TOP</a>
+        <!-- RIGHT COLUMN: Contact Us -->
+        <div class="site-footer-right">
+          <h3 class="site-footer-contact-title">Contact Us</h3>
+
+          <!-- Row 1: Address -->
+          <div class="site-footer-contact-row">
+            <svg class="w-5 h-5 shrink-0 text-[#FF5E1E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2" aria-hidden="true" style="margin-top: 2px;">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <p class="site-footer-contact-text">
+              EDC 203, NIST University<br>
+              Berhampur, Odisha - 761008
+            </p>
+          </div>
+
+          <!-- Row 2: Email -->
+          <div class="site-footer-contact-row">
+            <svg class="w-5 h-5 shrink-0 text-[#FF5E1E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <a href="mailto:mediamovers@nist.edu" class="site-footer-contact-link">
+              mediamovers@nist.edu
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM BAR: Divider & Dynamic Copyright Year -->
+      <div class="site-footer-divider"></div>
+      <p class="site-footer-copyright">
+        &copy; <span id="footer-year">2026</span> The MediaMovers - NIST PR Cell. All Rights Reserved.
+      </p>
     </div>
   </footer>
+  <script>
+    (function () {
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
+  <!-- ==================== END SITE FOOTER ==================== -->
   <script src="/js/api.js?v=1"></script>
   <script src="/js/reveal.js?v=1"></script>
   <script src="/js/modals.js?v=1"></script>

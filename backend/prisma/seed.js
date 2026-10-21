@@ -8,8 +8,14 @@ async function main() {
   console.log('--- Starting Database Seeding ---');
 
   // 1. Seed Admin User
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@mediamovers.nist.edu';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'AdminPassword2026!';
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminEmail || !adminPassword) {
+    console.log('[Seed] Notice: ADMIN_EMAIL or ADMIN_PASSWORD not set in environment. Skipping admin creation.');
+    return;
+  }
+
   const passwordHash = await bcrypt.hash(adminPassword, 12);
 
   const existingAdmin = await prisma.adminUser.findUnique({

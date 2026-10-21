@@ -1,7 +1,10 @@
 const { NODE_ENV } = require('../config/env');
 
 const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
+  let statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
+  if (err.message && err.message.startsWith('CORS policy rejection')) {
+    statusCode = 403;
+  }
 
   // Log error internally for observability
   console.error(`[Error] ${req.method} ${req.originalUrl}:`, err.message || err);

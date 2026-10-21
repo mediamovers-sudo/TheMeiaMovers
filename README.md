@@ -64,20 +64,15 @@ cd backend
 # 1. Install dependencies
 npm install
 
-# 2. Configure environment (already done if you cloned this repo)
-# Edit .env if needed — defaults work out of the box
+# 2. Configure environment variables
+# Copy .env.example to .env and set your DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD, etc.
+cp .env.example .env
 
-# 3. Generate Prisma client
-npx prisma generate
+# 3. Generate Prisma client & apply schema to database
+npm run build
 
-# 4. Create SQLite database & tables
-npx prisma db push
-
-# 5. Seed initial data (admin user + sample content)
-node prisma/seed.js
-
-# 6. Start the server
-node server.js
+# 4. Start the server
+npm start
 ```
 
 ### Access
@@ -88,9 +83,8 @@ node server.js
 | `http://localhost:5000/admin.html` | Admin dashboard (direct URL only) |
 | `http://localhost:5000/api/health` | API health check |
 
-### Default Admin Credentials
-- **Email:** `admin@mediamovers.nist.edu`
-- **Password:** `AdminPassword2026!`
+### Admin Credentials
+Admin user credentials are created on server startup from the `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables if no admin user exists in the database. Never commit credentials to version control.
 
 ## Page Separation
 
@@ -137,12 +131,16 @@ node server.js
 - **express-rate-limit** on login (10 per 15 min) and public forms
 - **No client-side DB SDK** — browser only talks to Express API
 
-## Switching to PostgreSQL
+## Database & Deployment
 
-1. Change `schema.prisma` datasource provider from `"sqlite"` to `"postgresql"`
-2. Update `DATABASE_URL` in `.env` to your PostgreSQL connection string
-3. Run `npx prisma generate && npx prisma db push`
-4. Re-seed: `node prisma/seed.js`
+- **Database:** PostgreSQL (Supabase / Neon / Render Postgres)
+- **Image Storage:** Cloudinary
+- **Deployment:** Render (Single Web Service serving both Express backend and frontend static assets)
+
+### Render Settings
+- **Root Directory:** `backend`
+- **Build Command:** `npm install && npm run build`
+- **Start Command:** `npm start`
 
 ## Data Models
 
