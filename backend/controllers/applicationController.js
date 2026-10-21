@@ -49,33 +49,37 @@ const getApplications = async (req, res, next) => {
 };
 
 // Admin: PATCH /api/applications/:id
-const updateApplicationStatus = async (req, res, next) => {
+const updateApplicationStatus = async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid application ID: must be an integer.' });
+  }
+
+  const { status } = req.body;
+  const validStatuses = ['new', 'reviewed', 'accepted', 'rejected'];
+
+  if (!status || !validStatuses.includes(status)) {
+    return res.status(400).json({
+      error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
+    });
+  }
+
   try {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'Invalid application ID.' });
-    }
-
-    const { status } = req.body;
-    const validStatuses = ['new', 'reviewed', 'accepted', 'rejected'];
-
-    if (!status || !validStatuses.includes(status)) {
-      return res.status(400).json({
-        error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
-      });
-    }
-
     const updated = await prisma.application.update({
       where: { id },
       data: { status }
     });
 
+    console.log(`[Application Route Success] PATCH /api/applications/${id} status updated to ${status}`);
     return res.status(200).json(updated);
   } catch (err) {
     if (err.code === 'P2025') {
-      return res.status(404).json({ error: 'Application not found.' });
+      return res.status(404).json({ error: `Application not found with ID ${id}.` });
     }
-    next(err);
+    console.error(`[Application Route Error] PATCH /api/applications/${id} failed:`, err.message || err);
+    return res.status(500).json({
+      error: 'Failed to update application status: ' + (err.message || 'Unknown database error')
+    });
   }
 };
 

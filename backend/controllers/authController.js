@@ -45,7 +45,8 @@ const login = async (req, res, next) => {
       message: 'Authentication successful.',
       user: {
         email: admin.email
-      }
+      },
+      token
     });
   } catch (err) {
     next(err);

@@ -43,16 +43,17 @@ const upload = multer({
 });
 
 // 4. Controller to stream image buffer to Cloudinary
-const handleUpload = async (req, res, next) => {
+const handleUpload = async (req, res) => {
   if (!req.file) {
+    console.warn('[Upload Route Warning] POST /api/upload called without file.');
     return res.status(400).json({ error: 'No image file provided for upload.' });
   }
 
   // Ensure Cloudinary is configured
   if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
-    console.error('[Upload] Cloudinary configuration missing. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.');
+    console.error('[Upload Route Error] Cloudinary configuration missing. Required env vars: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET.');
     return res.status(500).json({
-      error: 'Cloudinary storage is not configured on the server. Please verify environment variables.'
+      error: 'Cloudinary storage is not configured on the server. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in Render environment variables.'
     });
   }
 
@@ -74,15 +75,15 @@ const handleUpload = async (req, res, next) => {
       Readable.from(req.file.buffer).pipe(uploadStream);
     });
 
-    // Return the secure URL for database storage
+    console.log(`[Upload Route Success] POST /api/upload uploaded image: ${uploadResult.secure_url}`);
     return res.status(200).json({
       success: true,
       url: uploadResult.secure_url
     });
   } catch (err) {
-    console.error('[Upload] Cloudinary upload stream failed:', err.message || err);
+    console.error('[Upload Route Error] Cloudinary upload stream failed:', err.message || err);
     return res.status(500).json({
-      error: 'Failed to upload image to Cloudinary: ' + (err.message || 'Unknown error')
+      error: 'Cloudinary upload failed: ' + (err.message || 'Unknown error') + '. Please verify Cloudinary credentials in Render environment variables.'
     });
   }
 };

@@ -76,7 +76,9 @@ const defaultLocalOrigins = [
   'http://127.0.0.1:5000',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'http://localhost:8080'
+  'http://localhost:8080',
+  'https://themediamoversnist.onrender.com',
+  'http://themediamoversnist.onrender.com'
 ];
 
 const envOrigins = (ALLOWED_ORIGINS || FRONTEND_URL || '')
@@ -95,38 +97,51 @@ const normalizedConfiguredOrigins = allowedOriginsList.map(normalizeOrigin);
 
 const corsOptionsDelegate = (req, callback) => {
   const origin = req.header('Origin');
+  const allowedHeaders = ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'];
+  const methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
   // 1. Requests with no Origin header (e.g. mobile apps, curl, same-site navigation) must be allowed
   if (!origin) {
     return callback(null, {
       origin: true,
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+      methods,
+      allowedHeaders
     });
   }
 
   const normOrigin = normalizeOrigin(origin);
 
-  // 2. Always allow requests whose Origin matches the server's own host (same Express origin)
-  let isSameHost = false;
-  const reqHost = req.get('host'); // e.g. "themeiamoversnist.onrender.com" or "localhost:5000"
+  // 2. Always allow requests whose Origin matches the server's own host or onrender domain
+  let isAllowedOrigin = false;
+  const reqHost = req.get('host'); // e.g. "themediamoversnist.onrender.com" or "localhost:5000"
   try {
     const originUrl = new URL(origin);
-    if (reqHost && (originUrl.host.toLowerCase() === reqHost.toLowerCase() || originUrl.hostname.toLowerCase() === req.hostname.toLowerCase())) {
-      isSameHost = true;
+    const originHost = originUrl.host.toLowerCase();
+    const originHostname = originUrl.hostname.toLowerCase();
+
+    if (
+      (reqHost && (originHost === reqHost.toLowerCase() || originHostname === req.hostname.toLowerCase())) ||
+      originHostname === 'themediamoversnist.onrender.com' ||
+      originHostname.endsWith('.onrender.com') ||
+      originHostname === 'localhost' ||
+      originHostname === '127.0.0.1'
+    ) {
+      isAllowedOrigin = true;
     }
   } catch (_) {}
 
   // 3. Check against configured allowed origins
-  const isConfigured = normalizedConfiguredOrigins.includes(normOrigin);
+  if (normalizedConfiguredOrigins.includes(normOrigin)) {
+    isAllowedOrigin = true;
+  }
 
-  if (isSameHost || isConfigured) {
+  if (isAllowedOrigin) {
     callback(null, {
       origin: true,
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+      methods,
+      allowedHeaders
     });
   } else {
     // 4. Log which origin was blocked and what the allowed list is (no secrets)
@@ -136,6 +151,7 @@ const corsOptionsDelegate = (req, callback) => {
 };
 
 app.use(cors(corsOptionsDelegate));
+app.options('*', cors(corsOptionsDelegate));
 
 // 4. Body Parsing & Cookie Parser
 app.use(express.json({ limit: '10mb' }));
