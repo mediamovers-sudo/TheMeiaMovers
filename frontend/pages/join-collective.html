@@ -32,13 +32,13 @@
             <!-- Action Button Group -->
             <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <button
-                class="w-full sm:w-auto px-8 py-4 bg-primary-container text-on-surface font-label-mono-lg text-label-mono-lg uppercase font-medium tracking-wider hover:bg-accent-hover hover:shadow-[0_0_24px_rgba(255,94,30,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                onclick="document.getElementById('apply-modal').classList.remove('hidden')">
+                class="w-full sm:w-auto px-8 py-4 bg-primary-container text-on-surface font-label-mono-lg text-label-mono-lg uppercase font-medium tracking-wider hover:bg-accent-hover hover:shadow-[0_0_24px_rgba(255,94,30,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                data-action="open-apply">
                 APPLY FOR CREW [SPRING '25]
               </button>
               <button
-                class="w-full sm:w-auto px-8 py-4 bg-surface-pitch border border-border-subtle text-on-surface font-label-mono-lg text-label-mono-lg uppercase tracking-wider hover:border-on-surface hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                onclick="document.getElementById('pitch-modal').classList.remove('hidden')">
+                class="w-full sm:w-auto px-8 py-4 bg-surface-pitch border border-border-subtle text-on-surface font-label-mono-lg text-label-mono-lg uppercase tracking-wider hover:border-on-surface hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                data-action="open-pitch">
                 PITCH A STORY / REEL
               </button>
             </div>

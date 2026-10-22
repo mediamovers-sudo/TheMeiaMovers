@@ -122,7 +122,7 @@
       <div id="panel-members" class="tab-panel">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-headline-md text-2xl font-semibold uppercase">Collective Members</h2>
-          <button onclick="openMemberModal()"
+          <button data-action="open-add-member"
             class="flex items-center gap-2 px-4 py-2 bg-brand-blue text-black font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-blue-700 transition-colors">
             <span class="material-symbols-outlined text-[16px]">add</span> ADD MEMBER
           </button>
@@ -148,7 +148,7 @@
       <div id="panel-work-items" class="tab-panel hidden">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-headline-md text-2xl font-semibold uppercase">Featured Archives</h2>
-          <button onclick="openWorkItemModal()"
+          <button data-action="open-add-work-item"
             class="flex items-center gap-2 px-4 py-2 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors">
             <span class="material-symbols-outlined text-[16px]">add</span> ADD WORK ITEM
           </button>
@@ -173,7 +173,7 @@
       <div id="panel-wire-photos" class="tab-panel hidden">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-headline-md text-2xl font-semibold uppercase">Wire Photos</h2>
-          <button onclick="openWirePhotoModal()"
+          <button data-action="open-add-wire-photo"
             class="flex items-center gap-2 px-4 py-2 bg-primary-container text-white font-label-mono-sm text-[11px] tracking-[0.1em] uppercase hover:bg-accent-hover transition-colors">
             <span class="material-symbols-outlined text-[16px]">add</span> ADD WIRE PHOTO
           </button>
@@ -198,7 +198,7 @@
       <div id="panel-applications" class="tab-panel hidden">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-headline-md text-2xl font-semibold uppercase">Crew Applications</h2>
-          <button onclick="loadApplications()"
+          <button data-action="refresh-applications"
             class="flex items-center gap-2 px-4 py-2 border border-border-subtle text-text-muted hover:text-on-surface font-label-mono-sm text-[11px] tracking-[0.1em] uppercase transition-colors">
             <span class="material-symbols-outlined text-[16px]">refresh</span> REFRESH
           </button>
@@ -228,7 +228,7 @@
     <div class="relative w-full max-w-lg bg-surface-slate border border-border-hairline p-6 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-5">
         <h3 id="modal-title" class="font-headline-md text-xl font-semibold uppercase">Modal</h3>
-        <button onclick="closeAdminModal()" class="text-text-muted hover:text-on-surface transition-colors">
+        <button data-action="close-admin-modal" class="text-text-muted hover:text-on-surface transition-colors">
           <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
       </div>
@@ -466,8 +466,8 @@
           '<td class="p-3 text-text-muted">' + escHtml(m.department) + '</td>' +
           '<td class="p-3 text-text-muted">' + (m.sortOrder !== undefined ? m.sortOrder : 0) + '</td>' +
           '<td class="p-3"><div class="flex gap-2">' +
-            '<button onclick="openMemberModal(' + m.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
-            '<button onclick="deleteMember(' + m.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+            '<button data-action="edit-member" data-id="' + m.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button data-action="delete-member" data-id="' + m.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
           '</div></td></tr>';
       }).join('');
     }
@@ -597,8 +597,8 @@
           '<td class="p-3 text-text-muted">' + escHtml(w.category) + '</td>' +
           '<td class="p-3 text-text-muted">' + (w.sortOrder !== undefined ? w.sortOrder : 0) + '</td>' +
           '<td class="p-3"><div class="flex gap-2">' +
-            '<button onclick="openWorkItemModal(' + w.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
-            '<button onclick="deleteWorkItem(' + w.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+            '<button data-action="edit-work-item" data-id="' + w.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button data-action="delete-work-item" data-id="' + w.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
           '</div></td></tr>';
       }).join('');
     }
@@ -724,8 +724,8 @@
           '<td class="p-3 text-text-muted">' + escHtml(p.reelTag || '-') + '</td>' +
           '<td class="p-3 text-text-muted">' + (p.sortOrder !== undefined ? p.sortOrder : 0) + '</td>' +
           '<td class="p-3"><div class="flex gap-2">' +
-            '<button onclick="openWirePhotoModal(' + p.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
-            '<button onclick="deleteWirePhoto(' + p.id + ')" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
+            '<button data-action="edit-wire-photo" data-id="' + p.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-primary-container hover:border-primary-container/50 transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>' +
+            '<button data-action="delete-wire-photo" data-id="' + p.id + '" class="p-1.5 border border-border-subtle text-text-muted hover:text-red-400 hover:border-red-400/50 transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
           '</div></td></tr>';
       }).join('');
     }
@@ -852,7 +852,7 @@
           '<td class="p-3 text-text-muted">' + escHtml(a.department) + '</td>' +
           '<td class="p-3">' + (a.portfolioLink ? '<a href="' + escAttr(a.portfolioLink) + '" target="_blank" class="text-primary-container hover:underline text-xs uppercase">View</a>' : '-') + '</td>' +
           '<td class="p-3 text-text-muted max-w-[200px] truncate" title="' + escAttr(a.message || '') + '">' + escHtml(a.message || '-') + '</td>' +
-          '<td class="p-3"><select onchange="updateAppStatus(' + a.id + ', this.value)" class="bg-surface-pitch border border-border-subtle px-2 py-1 text-xs uppercase font-mono ' + (statusColors[a.status] || '') + '">' +
+          '<td class="p-3"><select data-action="update-app-status" data-id="' + a.id + '" class="bg-surface-pitch border border-border-subtle px-2 py-1 text-xs uppercase font-mono ' + (statusColors[a.status] || '') + '">' +
             '<option value="new"' + (a.status === 'new' ? ' selected' : '') + '>New</option>' +
             '<option value="reviewed"' + (a.status === 'reviewed' ? ' selected' : '') + '>Reviewed</option>' +
             '<option value="accepted"' + (a.status === 'accepted' ? ' selected' : '') + '>Accepted</option>' +
@@ -912,6 +912,56 @@
 
     function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function escAttr(s) { return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    /* ========================================================
+     * EVENT DELEGATION FOR ACTIONS
+     * ======================================================== */
+    document.addEventListener('click', function(e) {
+      var actEl = e.target.closest('[data-action]');
+      if (!actEl) return;
+      var action = actEl.getAttribute('data-action');
+      var idStr = actEl.getAttribute('data-id');
+      var id = idStr ? parseInt(idStr, 10) : null;
+
+      if (action === 'open-add-member') {
+        openMemberModal();
+      } else if (action === 'edit-member') {
+        openMemberModal(id);
+      } else if (action === 'delete-member') {
+        deleteMember(id);
+      } else if (action === 'open-add-work-item') {
+        openWorkItemModal();
+      } else if (action === 'edit-work-item') {
+        openWorkItemModal(id);
+      } else if (action === 'delete-work-item') {
+        deleteWorkItem(id);
+      } else if (action === 'open-add-wire-photo') {
+        openWirePhotoModal();
+      } else if (action === 'edit-wire-photo') {
+        openWirePhotoModal(id);
+      } else if (action === 'delete-wire-photo') {
+        deleteWirePhoto(id);
+      } else if (action === 'refresh-applications') {
+        loadApplications();
+      } else if (action === 'close-admin-modal') {
+        closeAdminModal();
+      }
+    });
+
+    document.addEventListener('change', function(e) {
+      var actEl = e.target.closest('[data-action="update-app-status"]');
+      if (!actEl) return;
+      var idStr = actEl.getAttribute('data-id');
+      var id = idStr ? parseInt(idStr, 10) : null;
+      if (id) updateAppStatus(id, actEl.value);
+    });
+
+    var adminModalEl = document.getElementById('admin-modal');
+    if (adminModalEl) {
+      adminModalEl.addEventListener('click', function(e) {
+        if (e.target === this) closeAdminModal();
+      });
+    }
 
     /* ========================================================
      * KEYBOARD

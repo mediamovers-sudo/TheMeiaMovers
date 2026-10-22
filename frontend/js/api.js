@@ -99,13 +99,13 @@
 
       var card = document.createElement('div');
       card.className = 'border border-border-hairline bg-surface-slate/80 p-5 group flex flex-col justify-between hover:border-primary-container hover:-translate-y-1.5 transition-all duration-300 reveal-item cursor-pointer select-none';
-      card.setAttribute('onclick', 'openMemberDossier(' + idx + ')');
+      card.setAttribute('data-action', 'open-member');
+      card.setAttribute('data-member-index', String(idx));
       card.style.transitionDelay = delayMs + 'ms';
-      card.onclick = function () { window.openMemberDossier(idx); };
 
       card.innerHTML =
         '<div>' +
-        '<div class="w-full h-64 overflow-hidden border border-border-hairline relative mb-4 bg-surface-pitch">' +
+        '<div class="w-full h-64 overflow-hidden border border-border-hairline relative mb-4 bg-surface-pitch pointer-events-none">' +
         '<img alt="' + name + '" class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500 ease-out" src="' + photo + '">' +
         '<div class="absolute inset-0 bg-surface-pitch/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">' +
         '<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-pitch/90 border border-primary-container text-primary font-label-mono-sm text-[11px] uppercase tracking-widest backdrop-blur-sm shadow-md">' +
@@ -113,11 +113,11 @@
         '</span>' +
         '</div>' +
         '</div>' +
-        '<div class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest">' + role + '</div>' +
-        '<h4 class="font-headline-md text-headline-md uppercase text-on-surface group-hover:text-primary transition-colors mt-1">' + name + '</h4>' +
-        (quoteText ? '<p class="font-body-sm text-body-sm text-text-muted mt-2 italic">' + quoteText + '</p>' : '') +
+        '<div class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest pointer-events-none">' + role + '</div>' +
+        '<h4 class="font-headline-md text-headline-md uppercase text-on-surface group-hover:text-primary transition-colors mt-1 pointer-events-none">' + name + '</h4>' +
+        (quoteText ? '<p class="font-body-sm text-body-sm text-text-muted mt-2 italic pointer-events-none">' + quoteText + '</p>' : '') +
         '</div>' +
-        '<div class="pt-4 mt-4 border-t border-border-hairline flex items-center justify-between font-label-mono-sm text-label-mono-sm text-text-muted">' +
+        '<div class="pt-4 mt-4 border-t border-border-hairline flex items-center justify-between font-label-mono-sm text-label-mono-sm text-text-muted pointer-events-none">' +
         '<span>DEPT: ' + dept + '</span>' +
         '<span class="text-on-surface group-hover:text-primary transition-colors">' + handle + '</span>' +
         '</div>';
@@ -137,10 +137,11 @@
     window.wirePhotos.forEach(function (p, idx) {
       var item = document.createElement('div');
       item.className = 'relative group overflow-hidden border border-border-hairline aspect-square bg-surface-slate reveal-item cursor-pointer select-none';
-      item.onclick = function () { window.openWirePhoto(idx); };
+      item.setAttribute('data-action', 'open-wire');
+      item.setAttribute('data-wire-index', String(idx));
       item.innerHTML =
-        '<img alt="' + (p.title || 'Wire photo') + '" class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-110 group-hover:grayscale-0 transition-all duration-700 ease-out" src="' + (p.image || '') + '">' +
-        '<div class="absolute inset-0 bg-surface-pitch/75 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">' +
+        '<img alt="' + (p.title || 'Wire photo') + '" class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-110 group-hover:grayscale-0 transition-all duration-700 ease-out pointer-events-none" src="' + (p.image || '') + '">' +
+        '<div class="absolute inset-0 bg-surface-pitch/75 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">' +
         '<span class="font-label-mono-sm text-label-mono-sm text-primary-container">' + (p.reelId || '[ REEL ]') + '</span>' +
         '<span class="font-label-mono-sm text-label-mono-sm text-on-surface uppercase tracking-wider">' + (p.title || '') + '</span>' +
         '</div>';

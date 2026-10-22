@@ -13,7 +13,7 @@
       <!-- ========================================================================= -->
       <div id="member-dossier-modal"
         class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 transition-opacity duration-300 opacity-0 pointer-events-auto"
-        onclick="if(event.target === this) { event.stopPropagation(); closeMemberDossier(); }">
+        data-action="close-member-backdrop">
         <div
           class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.85)] max-h-[92vh] overflow-y-auto transform scale-95 transition-all duration-300"
           id="dossier-container">
@@ -32,7 +32,7 @@
                 class="hidden sm:inline-block font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest border border-border-hairline px-2.5 py-0.5 bg-surface-pitch">
                 NIST PR CELL
               </span>
-              <button type="button" onclick="event.preventDefault(); event.stopPropagation(); closeMemberDossier();"
+              <button type="button" data-action="close-member"
                 class="text-text-muted hover:text-primary transition-colors flex items-center gap-1 font-label-mono-sm text-label-mono-sm uppercase cursor-pointer p-1.5 hover:bg-surface-pitch border border-transparent hover:border-border-subtle"
                 aria-label="Close Dossier">
                 <span class="hidden sm:inline">CLOSE</span>
@@ -129,14 +129,14 @@
 
                   <!-- Prev / Next Navigation -->
                   <div class="flex items-center gap-2">
-                    <button onclick="navigateDossier(-1)"
-                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
-                      title="Previous Member">
+                    <button data-action="prev-member"
+                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center cursor-pointer"
+                      title="Previous Member" aria-label="Previous Member">
                       <span class="material-symbols-outlined text-[18px]">west</span>
                     </button>
-                    <button onclick="navigateDossier(1)"
-                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
-                      title="Next Member">
+                    <button data-action="next-member"
+                      class="p-2 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center cursor-pointer"
+                      title="Next Member" aria-label="Next Member">
                       <span class="material-symbols-outlined text-[18px]">east</span>
                     </button>
                   </div>
@@ -154,7 +154,7 @@
       <!-- ========================================================================= -->
       <div id="wire-photo-modal"
         class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 transition-opacity duration-300 opacity-0 pointer-events-auto"
-        onclick="if(event.target === this) { event.stopPropagation(); closeWirePhoto(); }">
+        data-action="close-wire-backdrop">
         <div
           class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.85)] max-h-[92vh] overflow-y-auto transform scale-95 transition-all duration-300"
           id="wire-container">
@@ -166,7 +166,7 @@
               <span class="w-2 h-2 rounded-full bg-primary-container rec-dot"></span>
               <span class="font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest"
                 id="wire-tag">
-                // ON THE WIRE � ARCHIVE
+                // ON THE WIRE • ARCHIVE
               </span>
             </div>
             <div class="flex items-center gap-4">
@@ -174,7 +174,7 @@
                 class="hidden sm:inline-block font-label-mono-sm text-label-mono-sm text-text-muted uppercase tracking-widest border border-border-hairline px-2.5 py-0.5 bg-surface-pitch">
                 4K RAW CAPTURE
               </span>
-              <button type="button" onclick="event.preventDefault(); event.stopPropagation(); closeWirePhoto();"
+              <button type="button" data-action="close-wire"
                 class="text-text-muted hover:text-primary transition-colors flex items-center gap-1 font-label-mono-sm text-label-mono-sm uppercase cursor-pointer p-1.5 hover:bg-surface-pitch border border-transparent hover:border-border-subtle"
                 aria-label="Close Lightbox">
                 <span class="hidden sm:inline">CLOSE</span>
@@ -216,14 +216,14 @@
                   fountains at midnight.</p>
               </div>
               <div class="flex items-center gap-2 self-end sm:self-center">
-                <button onclick="navigateWire(-1)"
-                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
-                  title="Previous Photo">
+                <button data-action="prev-wire"
+                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center cursor-pointer"
+                  title="Previous Photo" aria-label="Previous Photo">
                   <span class="material-symbols-outlined text-[20px]">west</span>
                 </button>
-                <button onclick="navigateWire(1)"
-                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center"
-                  title="Next Photo">
+                <button data-action="next-wire"
+                  class="p-2.5 bg-surface-pitch border border-border-subtle hover:border-primary-container hover:text-primary text-on-surface transition-colors flex items-center justify-center cursor-pointer"
+                  title="Next Photo" aria-label="Next Photo">
                   <span class="material-symbols-outlined text-[20px]">east</span>
                 </button>
               </div>
@@ -235,30 +235,42 @@
       <!-- MODAL: SHOWREEL VIEWER                                                    -->
       <!-- ========================================================================= -->
       <div id="reel-modal"
-        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all"
+        data-action="close-reel-backdrop">
         <div
           class="relative w-full max-w-4xl bg-surface-slate border border-border-hairline p-6 flex flex-col shadow-2xl">
           <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-4">
-            <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">[ MEDIAMOVERS ANNUAL SHOWREEL
-              ]</span>
-            <button class="text-text-muted hover:text-on-surface transition-colors"
-              onclick="document.getElementById('reel-modal').classList.add('hidden'); document.getElementById('reel-video').pause();">
+            <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">[ MEDIAMOVERS ANNUAL SHOWREEL ]</span>
+            <button class="text-text-muted hover:text-on-surface transition-colors cursor-pointer"
+              data-action="close-reel" aria-label="Close Showreel">
               <span class="material-symbols-outlined text-[24px]">close</span>
             </button>
           </div>
           <div
             class="w-full aspect-video bg-surface-pitch flex items-center justify-center border border-border-hairline relative overflow-hidden group">
-            <video id="reel-video" class="w-full h-full object-contain" controls>
+            <video id="reel-video" class="w-full h-full object-contain" controls preload="metadata">
               <source src="/team/Video-3002.mp4" type="video/mp4">
             </video>
+            <div id="reel-video-error" class="hidden absolute inset-0 bg-surface-pitch/95 flex flex-col items-center justify-center p-6 text-center z-10">
+              <span class="material-symbols-outlined text-4xl text-brand-orange mb-2">videocam_off</span>
+              <p class="font-headline-md text-base uppercase text-on-surface mb-1">Video playback preview unavailable</p>
+              <p class="font-label-mono-sm text-xs text-text-muted mb-4">Direct stream could not be decoded in this browser session.</p>
+              <a href="/team/Video-3002.mp4" target="_blank" class="px-4 py-2 border border-border-subtle hover:border-primary-container text-xs font-mono uppercase tracking-wider text-on-surface hover:text-primary transition-colors">
+                Open direct video link
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <!-- ========================================================================= -->
       <!-- MODAL: CREW APPLICATION SHEET                                             -->
       <!-- ========================================================================= -->
+      <!-- ========================================================================= -->
+      <!-- MODAL: CREW APPLICATION SHEET                                             -->
+      <!-- ========================================================================= -->
       <div id="apply-modal"
-        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all"
+        data-action="close-apply-backdrop">
         <div
           class="relative w-full max-w-xl bg-surface-slate border border-border-hairline p-8 flex flex-col shadow-2xl">
           <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-6">
@@ -266,8 +278,8 @@
               <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">// CALLBOARD ADMISSION</span>
               <h3 class="font-headline-md text-headline-md uppercase text-on-surface">APPLY FOR SPRING 2025</h3>
             </div>
-            <button class="text-text-muted hover:text-on-surface transition-colors"
-              onclick="document.getElementById('apply-modal').classList.add('hidden')">
+            <button class="text-text-muted hover:text-on-surface transition-colors cursor-pointer"
+              data-action="close-apply" aria-label="Close Application">
               <span class="material-symbols-outlined text-[24px]">close</span>
             </button>
           </div>
@@ -317,10 +329,10 @@
             <div id="apply-form-status" class="hidden text-xs font-mono py-2"></div>
             <div class="pt-4 flex items-center justify-end gap-4">
               <button
-                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors"
-                onclick="document.getElementById('apply-modal').classList.add('hidden')" type="button">CANCEL</button>
+                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors cursor-pointer"
+                data-action="close-apply" type="button">CANCEL</button>
               <button id="apply-submit-btn"
-                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all"
+                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all cursor-pointer"
                 type="submit">SUBMIT TO CALLBOARD</button>
             </div>
           </form>
@@ -330,7 +342,8 @@
       <!-- MODAL: PITCH A STORY                                                      -->
       <!-- ========================================================================= -->
       <div id="pitch-modal"
-        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all">
+        class="fixed inset-0 z-[100] bg-surface-pitch/95 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all"
+        data-action="close-pitch-backdrop">
         <div
           class="relative w-full max-w-xl bg-surface-slate border border-border-hairline p-8 flex flex-col shadow-2xl">
           <div class="flex items-center justify-between pb-4 border-b border-border-hairline mb-6">
@@ -338,13 +351,12 @@
               <span class="font-label-mono-sm text-label-mono-sm text-primary uppercase">// EDITORIAL SUBMISSION</span>
               <h3 class="font-headline-md text-headline-md uppercase text-on-surface">PITCH A CAMPUS STORY</h3>
             </div>
-            <button class="text-text-muted hover:text-on-surface transition-colors"
-              onclick="document.getElementById('pitch-modal').classList.add('hidden')">
+            <button class="text-text-muted hover:text-on-surface transition-colors cursor-pointer"
+              data-action="close-pitch" aria-label="Close Pitch Modal">
               <span class="material-symbols-outlined text-[24px]">close</span>
             </button>
           </div>
-          <form class="space-y-4"
-            onsubmit="event.preventDefault(); alert('Story pitch transmitted to the Editor-in-Chief.'); document.getElementById('pitch-modal').classList.add('hidden');">
+          <form id="pitch-story-form" class="space-y-4">
             <div>
               <label class="font-label-mono-sm text-label-mono-sm uppercase text-text-muted block mb-1">WORKING STORY
                 TITLE</label>
@@ -382,10 +394,10 @@
             </div>
             <div class="pt-4 flex items-center justify-end gap-4">
               <button
-                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors"
-                onclick="document.getElementById('pitch-modal').classList.add('hidden')" type="button">CANCEL</button>
+                class="px-5 py-2.5 font-label-mono-sm text-label-mono-sm uppercase text-text-muted hover:text-on-surface transition-colors cursor-pointer"
+                data-action="close-pitch" type="button">CANCEL</button>
               <button
-                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all"
+                class="px-6 py-3 bg-primary-container text-on-surface font-label-mono-sm text-label-mono-sm uppercase font-medium hover:bg-accent-hover hover:shadow-[0_0_15px_rgba(255,94,30,0.3)] transition-all cursor-pointer"
                 type="submit">TRANSMIT TO DESK</button>
             </div>
           </form>

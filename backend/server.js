@@ -22,7 +22,7 @@ const app = express();
 // 1. Trust Reverse Proxy (Render HTTPS termination)
 app.set('trust proxy', 1);
 
-// 2. Security Headers via Helmet with CSP allowing Tailwind CDN, Google Fonts, and Cloudinary
+// 2. Security Headers via Helmet with CSP allowing Tailwind CDN, Google Fonts, Cloudinary, and Video Hosts
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -32,6 +32,9 @@ app.use(
           "'self'",
           "'unsafe-inline'",
           "https://cdn.tailwindcss.com"
+        ],
+        scriptSrcAttr: [
+          "'unsafe-inline'"
         ],
         styleSrc: [
           "'self'",
@@ -49,13 +52,22 @@ app.use(
           "blob:",
           "https://res.cloudinary.com",
           "https://lh3.googleusercontent.com",
-          "https://images.unsplash.com"
+          "https://images.unsplash.com",
+          "https://*.googleusercontent.com"
         ],
         mediaSrc: [
           "'self'",
           "data:",
           "blob:",
-          "https://res.cloudinary.com"
+          "https://res.cloudinary.com",
+          "https://*.googleusercontent.com"
+        ],
+        frameSrc: [
+          "'self'",
+          "https://www.youtube.com",
+          "https://www.youtube-nocookie.com",
+          "https://drive.google.com",
+          "https://player.vimeo.com"
         ],
         connectSrc: [
           "'self'",
